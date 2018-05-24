@@ -123,7 +123,7 @@ int main(void)
     dump_link_info();
 
     rt_kprintf("build time: %s %s\n", __DATE__, __TIME__);
-
+ 
 #if defined(RT_USING_DFS) && defined(RT_USING_SDIO)
     result = mmcsd_wait_cd_changed(RT_TICK_PER_SECOND);
     if (result == MMCSD_HOST_PLUGED)
@@ -142,6 +142,7 @@ int main(void)
 
     while (1)
     {
+       
         rt_thread_delay(RT_TICK_PER_SECOND);
     }
 }
