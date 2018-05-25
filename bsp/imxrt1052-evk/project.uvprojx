@@ -11,6 +11,7 @@
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
+      <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>MIMXRT1052:M7</Device>
@@ -323,6 +324,7 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
+            <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>1</v6Lang>
             <v6LangP>1</v6LangP>
@@ -782,22 +784,39 @@
             <File>
               <FileName>cJSON.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\packages\cJSON-1.0.2\cJSON.c</FilePath>
+              <FilePath>.\packages\cJSON\cJSON.c</FilePath>
             </File>
             <File>
               <FileName>cJSON_port.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\packages\cJSON-1.0.2\cJSON_port.c</FilePath>
+              <FilePath>.\packages\cJSON\cJSON_port.c</FilePath>
             </File>
             <File>
               <FileName>cJSON_util.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\packages\cJSON-1.0.2\cJSON_util.c</FilePath>
+              <FilePath>.\packages\cJSON\cJSON_util.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>MultiButton</GroupName>
+          <Files>
+            <File>
+              <FileName>multi_button.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\packages\MultiButton\multi_button.c</FilePath>
+            </File>
+            <File>
+              <FileName>event_async.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\packages\MultiButton\examples\event_async.c</FilePath>
+            </File>
+            <File>
+              <FileName>event_inquire.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\packages\MultiButton\examples\event_inquire.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>Kernel</GroupName>
@@ -979,6 +998,7 @@
                 <uThumb>2</uThumb>
                 <uSurpInc>2</uSurpInc>
                 <uC99>2</uC99>
+                <uGnu>2</uGnu>
                 <useXO>2</useXO>
                 <v6Lang>0</v6Lang>
                 <v6LangP>0</v6LangP>
