@@ -1433,6 +1433,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>DynamicString</GroupName>
+          <Files>
+            <File>
+              <FileName>dynamic_string.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\packages\DynamicString\dynamic_string.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>

@@ -115,6 +115,8 @@ void dump_link_info(void)
 #endif
 }
 
+
+
 int main(void)
 {
     rt_uint32_t result;
@@ -122,6 +124,9 @@ int main(void)
     dump_cc_info();
     dump_link_info();
 
+    
+    int len = strlen("abc");
+    
     rt_kprintf("build time: %s %s\n", __DATE__, __TIME__);
  
 #if defined(RT_USING_DFS) && defined(RT_USING_SDIO)
