@@ -10,7 +10,7 @@
       <TargetName>RT-Thread IMXRT1052</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -337,7 +337,7 @@
               <MiscControls>--library_interface=armcc --library_type=standardlib --diag_suppress=66,1296,186</MiscControls>
               <Define>RT_USING_ARM_LIBC, EVK_MCIMXRM, SKIP_SYSCLK_INIT, CPU_MIMXRT1052DVL6A, FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1</Define>
               <Undefine></Undefine>
-              <IncludePath>applications;.;drivers;Libraries;Libraries\drivers;Libraries\utilities;Libraries\CMSIS\Include;packages\cJSON;packages\MultiButton;..\..\include;..\..\libcpu\arm\cortex-m7;..\..\libcpu\arm\common;..\..\components\dfs\include;..\..\components\dfs\filesystems\devfs;..\..\components\dfs\filesystems\elmfat;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\spi;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\finsh;..\..\components\libc\compilers\armlibc;..\..\components\net\lwip-2.0.2\src;..\..\components\net\lwip-2.0.2\src\include;..\..\components\net\lwip-2.0.2\src\include\ipv4;..\..\components\net\lwip-2.0.2\src\arch\include;..\..\components\net\lwip-2.0.2\src\include\netif;..\..\components\net\lwip-2.0.2\src\include\posix</IncludePath>
+              <IncludePath>applications;.;drivers;Libraries;Libraries\drivers;Libraries\utilities;Libraries\CMSIS\Include;packages\cJSON-1.0.2;packages\hello\inc;packages\MultiButton;..\..\include;..\..\libcpu\arm\cortex-m7;..\..\libcpu\arm\common;..\..\components\dfs\include;..\..\components\dfs\filesystems\devfs;..\..\components\dfs\filesystems\elmfat;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\spi;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\finsh;..\..\components\libc\compilers\armlibc;..\..\components\net\lwip-2.0.2\src;..\..\components\net\lwip-2.0.2\src\include;..\..\components\net\lwip-2.0.2\src\include\ipv4;..\..\components\net\lwip-2.0.2\src\arch\include;..\..\components\net\lwip-2.0.2\src\include\netif;..\..\components\net\lwip-2.0.2\src\include\posix</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -784,17 +784,27 @@
             <File>
               <FileName>cJSON.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\packages\cJSON\cJSON.c</FilePath>
+              <FilePath>packages\cJSON-1.0.2\cJSON.c</FilePath>
             </File>
             <File>
               <FileName>cJSON_port.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\packages\cJSON\cJSON_port.c</FilePath>
+              <FilePath>packages\cJSON-1.0.2\cJSON_port.c</FilePath>
             </File>
             <File>
               <FileName>cJSON_util.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\packages\cJSON\cJSON_util.c</FilePath>
+              <FilePath>packages\cJSON-1.0.2\cJSON_util.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Hello</GroupName>
+          <Files>
+            <File>
+              <FileName>hello.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>packages\hello\src\hello.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -804,17 +814,7 @@
             <File>
               <FileName>multi_button.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\packages\MultiButton\multi_button.c</FilePath>
-            </File>
-            <File>
-              <FileName>event_async.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\packages\MultiButton\examples\event_async.c</FilePath>
-            </File>
-            <File>
-              <FileName>event_inquire.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\packages\MultiButton\examples\event_inquire.c</FilePath>
+              <FilePath>packages\MultiButton\multi_button.c</FilePath>
             </File>
           </Files>
         </Group>
