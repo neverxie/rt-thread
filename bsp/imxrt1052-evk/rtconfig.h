@@ -206,6 +206,8 @@
 
 /* example package: hello */
 
+#define PKG_USING_HELLO
+#define PKG_USING_HELLO_LATEST_VERSION
 #define SOC_IMXRT1052
 #define BOARD_USING_QSPIFLASH
 #define BOARD_RT1050_FIRE
