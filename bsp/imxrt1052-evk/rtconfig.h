@@ -198,7 +198,6 @@
 
 /* MultiButton Options */
 
-#define MULTIBUTTON_USING_EXAMPLE_ASYNC
 #define MULTIBUTTON_USING_EXAMPLE_INQUIRE
 
 /* sample package */
