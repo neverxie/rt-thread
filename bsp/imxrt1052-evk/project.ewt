@@ -2387,16 +2387,13 @@
     <group>
         <name>cJSON</name>
         <file>
-            <name>$PROJ_DIR$\packages\cJSON-1.0.2\cJSON.c</name>
+            <name>$PROJ_DIR$\packages\cJSON\cJSON.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\packages\cJSON-1.0.2\cJSON_port.c</name>
+            <name>$PROJ_DIR$\packages\cJSON\cJSON_port.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\packages\cJSON-1.0.2\cJSON_util.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\packages\cJSON-1.0.2\sample_json.c</name>
+            <name>$PROJ_DIR$\packages\cJSON\cJSON_util.c</name>
         </file>
     </group>
     <group>
@@ -2553,6 +2550,15 @@
         </file>
         <file>
             <name>$PROJ_DIR$\drivers\fsl_phy_fire.c</name>
+        </file>
+    </group>
+    <group>
+        <name>dstr</name>
+        <file>
+            <name>$PROJ_DIR$\packages\dstr\rtdstr.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\packages\dstr\rtdstr.h</name>
         </file>
     </group>
     <group>
@@ -2980,9 +2986,6 @@
     </group>
     <group>
         <name>MultiButton</name>
-        <file>
-            <name>$PROJ_DIR$\packages\MultiButton\examples\event_async.c</name>
-        </file>
         <file>
             <name>$PROJ_DIR$\packages\MultiButton\examples\event_inquire.c</name>
         </file>

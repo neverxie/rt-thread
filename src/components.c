@@ -219,7 +219,7 @@ void rt_application_init(void)
     (void)result;
 #endif
 
-    rt_thread_startup(tid);
+    rt_thread_startup(tid);    
 }
 
 int rtthread_startup(void)
