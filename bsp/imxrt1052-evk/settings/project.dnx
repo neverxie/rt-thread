@@ -49,14 +49,14 @@
         <ITMlogFile>$PROJ_DIR$\ITM.log</ITMlogFile>
     </SWOTraceHWSettings>
     <DebugChecksum>
-        <Checksum>707699930</Checksum>
+        <Checksum>1276129701</Checksum>
     </DebugChecksum>
     <CodeCoverage>
         <Enabled>_ 0</Enabled>
     </CodeCoverage>
     <Disassembly>
-        <InstrCount>0</InstrCount>
         <MixedMode>1</MixedMode>
+        <InstrCount>0</InstrCount>
     </Disassembly>
     <CallStack>
         <ShowArgs>0</ShowArgs>
