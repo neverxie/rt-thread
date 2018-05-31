@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'template' 
+ * Project: 'project' 
  * Target:  'RT-Thread IMXRT1052' 
  */
 
