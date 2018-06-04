@@ -791,7 +791,7 @@ rt_int32_t rt_vsnprintf(char       *buf,
             continue;
         }
 
-        /* process flags */
+        /* process flags */   
         flags = 0;
 
         while (1)

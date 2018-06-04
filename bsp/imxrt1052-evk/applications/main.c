@@ -146,7 +146,7 @@ int main(void)
     while (1)
     {
        
-        rt_thread_delay(RT_TICK_PER_SECOND);
+//        rt_thread_delay(RT_TICK_PER_SECOND);
     }
 }
 
