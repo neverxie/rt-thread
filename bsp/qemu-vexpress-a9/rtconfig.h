@@ -203,8 +203,6 @@
 
 
 /* tools packages */
-#define PKG_USING_DSTR
-#define DSTR_USING_EXAMPLE
 
 
 /* system packages */
@@ -217,6 +215,12 @@
 
 /* miscellaneous packages */
 
+#define PKG_USING_DSTR
+#define PKG_USING_DSTR_V010
+
+/* dstr Options */
+
+#define DSTR_USING_EXAMPLE
 
 /* sample package */
 

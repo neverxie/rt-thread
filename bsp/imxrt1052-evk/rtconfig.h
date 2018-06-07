@@ -162,6 +162,12 @@
 
 #define PKG_USING_CJSON
 #define PKG_USING_CJSON_LATEST_VERSION
+#define PKG_USING_JSMN
+#define PKG_USING_JSMN_V010
+
+/* jsmn Options */
+
+#define JSMN_USING_EXAMPLE
 
 /* Wi-Fi */
 
@@ -199,10 +205,15 @@
 /* MultiButton Options */
 
 #define MULTIBUTTON_USING_EXAMPLE_INQUIRE
+#define PKG_USING_DSTR
+#define PKG_USING_DSTR_V010
+
+/* dstr Options */
+
+#define DSTR_USING_EXAMPLE
 
 /* sample package */
-#define PKG_USING_DSTR
-#define DSTR_USING_EXAMPLE
+
 
 /* example package: hello */
 
