@@ -2555,10 +2555,10 @@
     <group>
         <name>dstr</name>
         <file>
-            <name>$PROJ_DIR$\packages\dstr\rtdstr.c</name>
+            <name>$PROJ_DIR$\packages\codes\dstr\src\dstr.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\packages\dstr\rtdstr.h</name>
+            <name>$PROJ_DIR$\packages\codes\dstr\examples\examples_dstr.c</name>
         </file>
     </group>
     <group>

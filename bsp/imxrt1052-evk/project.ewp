@@ -32,11 +32,11 @@
                 </option>
                 <option>
                     <name>Input description</name>
-                    <state>Automatic choice of formatter, without multibyte support.</state>
+                    <state>Automatic choice of formatter.</state>
                 </option>
                 <option>
                     <name>Output description</name>
-                    <state>Automatic choice of formatter, without multibyte support.</state>
+                    <state>Automatic choice of formatter.</state>
                 </option>
                 <option>
                     <name>GOutputBinary</name>
@@ -117,7 +117,7 @@
                 <option>
                     <name>GBECoreSlave</name>
                     <version>26</version>
-                    <state>41</state>
+                    <state>38</state>
                 </option>
                 <option>
                     <name>OGUseCmsis</name>
@@ -350,26 +350,26 @@
                     <name>CCIncludePath2</name>
                     <state>$PROJ_DIR$\..\..\components\libc\compilers\dlib</state>
                     <state>$PROJ_DIR$\packages\cJSON</state>
-                    <state>$PROJ_DIR$\packages\dstr</state>
                     <state>$PROJ_DIR$\Libraries</state>
                     <state>$PROJ_DIR$\..\..\include</state>
                     <state>$PROJ_DIR$\..\..\components\net\lwip-2.0.2\src\include\netif</state>
                     <state>$PROJ_DIR$\..\..\components\drivers\include</state>
                     <state>$PROJ_DIR$\..\..\libcpu\arm\common</state>
                     <state>$PROJ_DIR$\Libraries\drivers</state>
-                    <state>$PROJ_DIR$\..\..\components\net\lwip-2.0.2\src\include</state>
+                    <state>$PROJ_DIR$\..\..\components\dfs\filesystems\devfs</state>
                     <state>$PROJ_DIR$\..\..\components\net\lwip-2.0.2\src</state>
+                    <state>$PROJ_DIR$\..\..\components\net\lwip-2.0.2\src\include</state>
                     <state>$PROJ_DIR$\drivers</state>
                     <state>$PROJ_DIR$\..\..\components\net\lwip-2.0.2\src\include\ipv4</state>
                     <state>$PROJ_DIR$\.</state>
                     <state>$PROJ_DIR$\..\..\libcpu\arm\cortex-m7</state>
                     <state>$PROJ_DIR$\..\..\components\dfs\include</state>
-                    <state>$PROJ_DIR$\..\..\components\dfs\filesystems\devfs</state>
                     <state>$PROJ_DIR$\Libraries\CMSIS\Include</state>
                     <state>$PROJ_DIR$\Libraries\utilities</state>
                     <state>$PROJ_DIR$\..\..\components\drivers\spi</state>
                     <state>$PROJ_DIR$\applications</state>
                     <state>$PROJ_DIR$\..\..\components\finsh</state>
+                    <state>$PROJ_DIR$\packages\codes\dstr\inc</state>
                     <state>$PROJ_DIR$\packages\MultiButton</state>
                     <state>$PROJ_DIR$\..\..\components\dfs\filesystems\elmfat</state>
                     <state>$PROJ_DIR$\packages\hello\inc</state>
@@ -1407,19 +1407,20 @@
                     <state>$PROJ_DIR$\..\..\components\drivers\include</state>
                     <state>$PROJ_DIR$\..\..\libcpu\arm\common</state>
                     <state>$PROJ_DIR$\Libraries\drivers</state>
-                    <state>$PROJ_DIR$\..\..\components\net\lwip-2.0.2\src\include</state>
+                    <state>$PROJ_DIR$\..\..\components\dfs\filesystems\devfs</state>
                     <state>$PROJ_DIR$\..\..\components\net\lwip-2.0.2\src</state>
+                    <state>$PROJ_DIR$\..\..\components\net\lwip-2.0.2\src\include</state>
                     <state>$PROJ_DIR$\drivers</state>
                     <state>$PROJ_DIR$\..\..\components\net\lwip-2.0.2\src\include\ipv4</state>
                     <state>$PROJ_DIR$\.</state>
                     <state>$PROJ_DIR$\..\..\libcpu\arm\cortex-m7</state>
                     <state>$PROJ_DIR$\..\..\components\dfs\include</state>
-                    <state>$PROJ_DIR$\..\..\components\dfs\filesystems\devfs</state>
                     <state>$PROJ_DIR$\Libraries\CMSIS\Include</state>
                     <state>$PROJ_DIR$\Libraries\utilities</state>
                     <state>$PROJ_DIR$\..\..\components\drivers\spi</state>
                     <state>$PROJ_DIR$\applications</state>
                     <state>$PROJ_DIR$\..\..\components\finsh</state>
+                    <state>$PROJ_DIR$\packages\codes\dstr\inc</state>
                     <state>$PROJ_DIR$\packages\MultiButton</state>
                     <state>$PROJ_DIR$\..\..\components\dfs\filesystems\elmfat</state>
                     <state>$PROJ_DIR$\packages\hello\inc</state>
@@ -2285,10 +2286,10 @@
     <group>
         <name>dstr</name>
         <file>
-            <name>$PROJ_DIR$\packages\dstr\rtdstr.c</name>
+            <name>$PROJ_DIR$\packages\codes\dstr\src\dstr.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\packages\dstr\rtdstr.h</name>
+            <name>$PROJ_DIR$\packages\codes\dstr\examples\examples_dstr.c</name>
         </file>
     </group>
     <group>

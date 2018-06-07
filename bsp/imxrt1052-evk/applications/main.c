@@ -25,7 +25,7 @@
 #include <stdint.h>
 #include <rthw.h>
 #include <rtthread.h>
-
+#include "string.h"
 #ifdef RT_USING_DFS
 #include <dfs_file.h>
 #endif
@@ -117,7 +117,6 @@ void dump_link_info(void)
 
 
 
-
 int main(void)
 {
     rt_uint32_t result;
@@ -142,11 +141,10 @@ int main(void)
         rt_kprintf("sdcard init fail or timeout: %d!\n", result);
     }
 #endif
-
+                            
     while (1)
     {
-       
-//        rt_thread_delay(RT_TICK_PER_SECOND);
+        rt_thread_delay(RT_TICK_PER_SECOND);
     }
 }
 

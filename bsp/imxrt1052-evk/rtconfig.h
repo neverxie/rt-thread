@@ -201,7 +201,8 @@
 #define MULTIBUTTON_USING_EXAMPLE_INQUIRE
 
 /* sample package */
-
+#define PKG_USING_DSTR
+#define DSTR_USING_EXAMPLE
 
 /* example package: hello */
 
