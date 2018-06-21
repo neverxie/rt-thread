@@ -158,11 +158,6 @@
 
 /* RT-Thread online packages */
 
-/* system packages */
-
-/* RT-Thread GUI Engine */
-
-
 /* IoT - internet of things */
 
 
@@ -186,14 +181,25 @@
 /* tools packages */
 
 
+/* system packages */
+
+/* RT-Thread GUI Engine */
+
+
+/* peripheral libraries and drivers */
+
+
 /* miscellaneous packages */
+
+
+/* sample package */
 
 
 /* example package: hello */
 
 #define SOC_IMXRT1052
-#define BOARD_USING_HYPERFLASH
-#define BOARD_RT1050_EVK
+#define BOARD_USING_QSPIFLASH
+#define BOARD_RT1050_FIRE
 
 /* RT1050 Bsp Config */
 
@@ -218,7 +224,7 @@
 
 /* Select lcd driver */
 
-/* Notice: Evk Board para: 480*272 4 4 8 2 40 10 106 45 */
+/* Notice: Fire Board para: 800*480 4 4 8 2 40 10 58 45 */
 
 #define RT_USING_LCD
 #define LCD_WIDTH 480
