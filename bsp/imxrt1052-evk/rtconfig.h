@@ -112,7 +112,7 @@
 #define RT_USING_LWIP202
 #define RT_LWIP_ICMP
 #define RT_LWIP_DNS
-#define RT_LWIP_DHCP
+//#define RT_LWIP_DHCP
 #define IP_SOF_BROADCAST 1
 #define IP_SOF_BROADCAST_RECV 1
 
@@ -123,6 +123,7 @@
 #define RT_LWIP_MSKADDR "255.255.255.0"
 #define RT_LWIP_UDP
 #define RT_LWIP_TCP
+#define RT_LWIP_RAW
 #define RT_MEMP_NUM_NETCONN 8
 #define RT_LWIP_PBUF_NUM 16
 #define RT_LWIP_RAW_PCB_NUM 4
@@ -160,6 +161,12 @@
 
 /* IoT - internet of things */
 
+#define PKG_USING_JSMN
+#define PKG_USING_JSMN_LATEST_VERSION
+
+/* jsmn Options */
+
+#define JSMN_USING_EXAMPLE
 
 /* Wi-Fi */
 
@@ -168,6 +175,9 @@
 
 /* Wiced WiFi */
 
+#define PKG_USING_NETUTILS
+#define PKG_NETUTILS_PING
+#define PKG_USING_NETUTILS_LATEST_VERSION
 
 /* security packages */
 
@@ -191,6 +201,12 @@
 
 /* miscellaneous packages */
 
+#define PKG_USING_DSTR
+#define PKG_USING_DSTR_V010
+
+/* dstr Options */
+
+#define DSTR_USING_EXAMPLE
 
 /* sample package */
 
