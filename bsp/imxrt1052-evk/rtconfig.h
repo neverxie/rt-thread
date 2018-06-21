@@ -85,6 +85,7 @@
 #define RT_DFS_ELM_MAX_SECTOR_SIZE 512
 #define RT_DFS_ELM_REENTRANT
 #define RT_USING_DFS_DEVFS
+#define RT_USING_DFS_NET
 
 /* Device Drivers */
 
@@ -103,6 +104,7 @@
 /* POSIX layer and C standard library */
 
 #define RT_USING_LIBC
+#define RT_USING_POSIX
 
 /* Network stack */
 
@@ -112,7 +114,7 @@
 #define RT_USING_LWIP202
 #define RT_LWIP_ICMP
 #define RT_LWIP_DNS
-//#define RT_LWIP_DHCP
+#define RT_LWIP_DHCP
 #define IP_SOF_BROADCAST 1
 #define IP_SOF_BROADCAST_RECV 1
 
@@ -123,6 +125,7 @@
 #define RT_LWIP_MSKADDR "255.255.255.0"
 #define RT_LWIP_UDP
 #define RT_LWIP_TCP
+#define RT_LWIP_RAW
 #define RT_MEMP_NUM_NETCONN 8
 #define RT_LWIP_PBUF_NUM 16
 #define RT_LWIP_RAW_PCB_NUM 4
@@ -163,7 +166,7 @@
 #define PKG_USING_CJSON
 #define PKG_USING_CJSON_LATEST_VERSION
 #define PKG_USING_JSMN
-#define PKG_USING_JSMN_V010
+#define PKG_USING_JSMN_LATEST_VERSION
 
 /* jsmn Options */
 
@@ -176,6 +179,17 @@
 
 /* Wiced WiFi */
 
+#define PKG_USING_NETUTILS
+#define PKG_NETUTILS_PING
+#define PKG_NETUTILS_TFTP
+#define NETUTILS_TFTP_PORT 69
+#define PKG_NETUTILS_IPERF
+#define PKG_NETUTILS_NETIO
+#define PKG_NETUTILS_NTP
+#define NETUTILS_NTP_TIMEZONE 8
+#define NETUTILS_NTP_HOSTNAME "cn.ntp.org.cn"
+#define PKG_NETUTILS_TELNET
+#define PKG_USING_NETUTILS_LATEST_VERSION
 
 /* security packages */
 
@@ -199,12 +213,6 @@
 
 /* miscellaneous packages */
 
-#define PKG_USING_MULTIBUTTON
-#define PKG_USING_MULTIBUTTON_LATEST_VERSION
-
-/* MultiButton Options */
-
-#define MULTIBUTTON_USING_EXAMPLE_INQUIRE
 #define PKG_USING_DSTR
 #define PKG_USING_DSTR_V010
 
@@ -217,8 +225,6 @@
 
 /* example package: hello */
 
-#define PKG_USING_HELLO
-#define PKG_USING_HELLO_LATEST_VERSION
 #define SOC_IMXRT1052
 #define BOARD_USING_QSPIFLASH
 #define BOARD_RT1050_FIRE
