@@ -165,12 +165,15 @@
 
 #define PKG_USING_CJSON
 #define PKG_USING_CJSON_LATEST_VERSION
+<<<<<<< HEAD
 #define PKG_USING_JSMN
 #define PKG_USING_JSMN_LATEST_VERSION
 
 /* jsmn Options */
 
 #define JSMN_USING_EXAMPLE
+=======
+>>>>>>> parent of b56362467... .
 
 /* Wi-Fi */
 
@@ -213,15 +216,25 @@
 
 /* miscellaneous packages */
 
+<<<<<<< HEAD
 #define PKG_USING_DSTR
 #define PKG_USING_DSTR_V010
 
 /* dstr Options */
 
 #define DSTR_USING_EXAMPLE
+=======
+#define PKG_USING_MULTIBUTTON
+#define PKG_USING_MULTIBUTTON_LATEST_VERSION
+
+/* MultiButton Options */
+
+#define MULTIBUTTON_USING_EXAMPLE_INQUIRE
+>>>>>>> parent of b56362467... .
 
 /* sample package */
-
+#define PKG_USING_DSTR
+#define DSTR_USING_EXAMPLE
 
 /* example package: hello */
 
