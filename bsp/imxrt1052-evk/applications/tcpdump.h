@@ -27,12 +27,14 @@
 /* header file content */
 
 #include <rtdef.h>
+#include "netif/ethernetif.h"
 
 struct rt_ip_mess
 {
     rt_uint8_t *payload;
     rt_uint16_t len;
 };
+typedef struct rt_ip_mess rt_ip_mess_t;
 
 struct rt_pcap_file_header
 {
@@ -68,5 +70,12 @@ struct rt_pcap_file
 typedef struct rt_pcap_file    rt_pcap_file_t;
 
 #define PCAP_HEADER_LENGTH    (8)
+
+rt_pcap_file_t *rt_creat_pcap_file(rt_ip_mess_t *pkg);
+int rt_del_pcap_file(rt_pcap_file_t *file);
+int rt_save_pcap_file(rt_pcap_file_t *file, const char *filename);
+rt_ip_mess_t *rt_recv_ip_mess(void);
+void rt_send_ip_mess(struct pbuf *p);
+int rt_del_ip_mess(struct rt_ip_mess *pkg);
 
 #endif /* __FILE_H__ */
