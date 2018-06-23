@@ -246,6 +246,8 @@ free_and_return:
   return ERR_OK;
 }
 
+extern int rt_icmp_filter(struct pbuf* recv);
+extern void rt_pbufcpy(struct pbuf *p);
 /**
  * @ingroup ethernet
  * Send an ethernet packet on the network using netif->linkoutput().
@@ -300,6 +302,8 @@ ethernet_output(struct netif* netif, struct pbuf* p,
     (netif->hwaddr_len == ETH_HWADDR_LEN));
   LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE,
     ("ethernet_output: sending packet %p\n", (void *)p));
+  
+//  rt_pbufcpy(p);
 
   /* send the packet */
   return netif->linkoutput(netif, p);

@@ -259,7 +259,7 @@ rt_err_t eth_device_init_with_flag(struct eth_device *dev, char *name, rt_uint16
 
     /* set output */
     netif->output       = etharp_output;
-    netif->linkoutput   = ethernetif_linkoutput;
+    netif->linkoutput   = ethernetif_linkoutput;    //  call 
 
 #if LWIP_NETIF_HOSTNAME
     /* Initialize interface hostname */
@@ -404,7 +404,9 @@ static void eth_rx_thread_entry(void* parameter)
             {
                 if(device->eth_rx == RT_NULL) break;
                 
+                /* eth device interface */
                 p = device->eth_rx(&(device->parent));
+                
                 if (p != RT_NULL)
                 {
                     /* notify to upper layer */

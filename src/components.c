@@ -33,6 +33,7 @@
 #include <rthw.h>
 #include <rtthread.h>
 
+
 #ifdef RT_USING_USER_MAIN
 #ifndef RT_MAIN_THREAD_STACK_SIZE
 #define RT_MAIN_THREAD_STACK_SIZE     2048
@@ -199,10 +200,14 @@ void main_thread_entry(void *parameter)
 #endif
 }
 
+extern void rt_tcp_dump_thread(void *param);
+rt_mailbox_t tcpdump_mb;
 void rt_application_init(void)
 {
     rt_thread_t tid;
-
+    rt_thread_t tid_tcpdump;
+    const char *mbt;    
+    
 #ifdef RT_USING_HEAP
     tid = rt_thread_create("main", main_thread_entry, RT_NULL,
                            RT_MAIN_THREAD_STACK_SIZE, RT_THREAD_PRIORITY_MAX / 3, 20);
@@ -218,8 +223,18 @@ void rt_application_init(void)
     /* if not define RT_USING_HEAP, using to eliminate the warning */
     (void)result;
 #endif
-
     rt_thread_startup(tid);
+        
+	tid_tcpdump = rt_thread_create("tcpdump", rt_tcp_dump_thread, RT_NULL, 512, 10, 100);
+    RT_ASSERT(tid_tcpdump != RT_NULL);
+    rt_thread_startup(tid_tcpdump);
+    
+    tcpdump_mb = rt_mb_create(mbt, 100, RT_IPC_FLAG_FIFO);
+    if (tcpdump_mb == RT_NULL)
+    {    
+        rt_kprintf("mail error\n");
+        return;
+    }
 }
 
 int rtthread_startup(void)

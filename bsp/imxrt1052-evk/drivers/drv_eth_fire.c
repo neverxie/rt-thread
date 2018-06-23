@@ -14,6 +14,7 @@
 #include <rtthread.h>
 #include "board.h"
 #include <rtdevice.h>
+#include "tcpdump.h"
 
 #ifdef RT_USING_FINSH
     #include <finsh.h>
@@ -408,7 +409,7 @@ static void packet_dump(const char *msg, const struct pbuf *p)
         {
             if ((i % 8) == 0)
             {
-                rt_kprintf("  ");
+                rt_kprintf("  ");  
             }
             if ((i % 16) == 0)
             {
@@ -672,7 +673,7 @@ rt_err_t rt_imxrt_eth_tx(rt_device_t dev, struct pbuf *p)
     RT_ASSERT(p != NULL);
     RT_ASSERT(enet_handle != RT_NULL);
 
-    dbg_log(DBG_LOG, "rt_imxrt_eth_tx: %d\n", p->len);
+    dbg_log(DBG_LOG, "rt_imxrt_eth_tx: %d\n", p->len);  //  
 
 #ifdef ETH_TX_DUMP
     packet_dump("send", p);
@@ -693,6 +694,9 @@ rt_err_t rt_imxrt_eth_tx(rt_device_t dev, struct pbuf *p)
 
     return RT_EOK;
 }
+
+
+extern void rt_pbufcpy(struct pbuf *p);
 
 /* reception packet. */
 struct pbuf *rt_imxrt_eth_rx(rt_device_t dev)
@@ -721,7 +725,14 @@ struct pbuf *rt_imxrt_eth_rx(rt_device_t dev)
             {
 #ifdef ETH_RX_DUMP
                 packet_dump("recv", p);
+                int tick = rt_tick_get();
+                rt_kprintf("tick_start:%d\n", tick/1000);
+                rt_kprintf("tick_start:%d\n", tick%1000);
 #endif
+//                rt_kprintf("p->totallen:%d\n", p->tot_len);
+//                rt_kprintf("p->len:%d\n", p->len);
+                rt_pbufcpy(p);
+                
                 return p;
             }
             else

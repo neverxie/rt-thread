@@ -140,7 +140,7 @@ int lwip_system_init(void)
 {
     rt_err_t rc;
     struct rt_semaphore done_sem;
-	
+
     eth_system_device_init_private();
 
     /* set default netif to NULL */
@@ -192,6 +192,7 @@ void sys_init(void)
 
 void lwip_sys_init(void)
 {
+
     lwip_system_init();
 }
 
