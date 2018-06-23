@@ -697,7 +697,7 @@ rt_err_t rt_imxrt_eth_tx(rt_device_t dev, struct pbuf *p)
 
 
 extern void rt_pbufcpy(struct pbuf *p);
-
+extern rt_mailbox_t tcpdump_mb;
 /* reception packet. */
 struct pbuf *rt_imxrt_eth_rx(rt_device_t dev)
 {
@@ -729,10 +729,9 @@ struct pbuf *rt_imxrt_eth_rx(rt_device_t dev)
                 rt_kprintf("tick_start:%d\n", tick/1000);
                 rt_kprintf("tick_start:%d\n", tick%1000);
 #endif
-//                rt_kprintf("p->totallen:%d\n", p->tot_len);
-//                rt_kprintf("p->len:%d\n", p->len);
-                rt_pbufcpy(p);
-                
+
+//                rt_pbufcpy(p);
+                rt_mb_send(tcpdump_mb, (rt_uint32_t)p);
                 return p;
             }
             else

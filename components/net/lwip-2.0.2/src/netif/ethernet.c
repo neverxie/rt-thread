@@ -269,7 +269,7 @@ ethernet_output(struct netif* netif, struct pbuf* p,
 {
   struct eth_hdr* ethhdr;
   u16_t eth_type_be = lwip_htons(eth_type);
-
+  struct pbuf* ph = p;
 #if ETHARP_SUPPORT_VLAN && defined(LWIP_HOOK_VLAN_SET)
   s32_t vlan_prio_vid = LWIP_HOOK_VLAN_SET(netif, p, src, dst, eth_type);
   if (vlan_prio_vid >= 0) {
@@ -303,8 +303,8 @@ ethernet_output(struct netif* netif, struct pbuf* p,
   LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE,
     ("ethernet_output: sending packet %p\n", (void *)p));
   
-//  rt_pbufcpy(p);
-
+     
+            
   /* send the packet */
   return netif->linkoutput(netif, p);
 

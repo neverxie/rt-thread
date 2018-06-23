@@ -28,9 +28,9 @@
 
 #include <rtdef.h>
 
-struct pdata
+struct rt_ip_mess
 {
-    rt_uint8_t *buf;
+    rt_uint8_t *payload;
     rt_uint16_t len;
 };
 
