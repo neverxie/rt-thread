@@ -64,6 +64,7 @@ struct rt_pcap_file
 {
     struct rt_pcap_file_header   p_f_h;
     struct rt_pcap_header        p_h;
+    void (*time)(rt_uint8_t flag);
     void *ip_mess;
     size_t ip_len;
 };
@@ -75,7 +76,7 @@ rt_pcap_file_t *rt_creat_pcap_file(rt_ip_mess_t *pkg);
 int rt_del_pcap_file(rt_pcap_file_t *file);
 int rt_save_pcap_file(rt_pcap_file_t *file, const char *filename);
 rt_ip_mess_t *rt_recv_ip_mess(void);
-void rt_send_ip_mess(struct pbuf *p);
+//void rt_send_ip_mess(struct pbuf *p);
 int rt_del_ip_mess(struct rt_ip_mess *pkg);
 
 #endif /* __FILE_H__ */

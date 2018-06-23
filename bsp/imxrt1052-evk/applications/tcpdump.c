@@ -30,6 +30,8 @@
 #include <stdio.h>
 
 extern rt_mailbox_t tcpdump_mb;
+static netif_linkoutput_fn linkoutput;
+static struct netif *_netif;
 
 #if 1
 rt_uint8_t ip[74] =
@@ -127,40 +129,34 @@ int rt_save_pcap_file(rt_pcap_file_t *file, const char *filename)
     return 0;
 }
 
-void rt_send_ip_mess(struct pbuf *p)
-{
-    if (rt_mb_send(tcpdump_mb, (rt_uint32_t)p) == RT_EOK)
-    {
-        pbuf_ref(p);
-    }
-}
-
 rt_ip_mess_t *rt_recv_ip_mess(void)
 {
-    struct pbuf *p;
+    struct pbuf *p1, *p2;
     rt_ip_mess_t *pkg;
     rt_uint8_t *ptr;
     rt_uint32_t mbval;
 
     if (rt_mb_recv(tcpdump_mb, &mbval, RT_WAITING_FOREVER) == RT_EOK)
     {
-        p = (struct pbuf *)mbval;
-
-        pkg = rt_malloc(sizeof(struct rt_ip_mess) + p->tot_len);
+        p1 = (struct pbuf *)mbval;
+        p2 = p1;
+        
+        pkg = rt_malloc(sizeof(struct rt_ip_mess) + p1->tot_len);
         if (pkg == RT_NULL)
             return RT_NULL;
 
         pkg->payload = (rt_uint8_t *)pkg + sizeof(struct rt_ip_mess);
-        pkg->len = p->tot_len;
+        pkg->len = p1->tot_len;
 
         ptr = pkg->payload;
 
-        while (p)
+        while (p1)
         {
-            rt_memcpy(ptr, p->payload, p->len);
-            ptr += p->len;
-            p = p->next;
+            rt_memcpy(ptr, p1->payload, p1->len);
+            ptr += p1->len;
+            p1 = p1->next;
         }
+//        pbuf_free(p2);
         return pkg;
     }
     else
@@ -182,9 +178,19 @@ int rt_del_ip_mess(struct rt_ip_mess *pkg)
     }
 }
 
+err_t rt_send_ip_mess(struct netif *netif, struct pbuf *p)
+{
+    if (rt_mb_send(tcpdump_mb, (rt_uint32_t)p) == RT_EOK)
+    {
+        pbuf_ref(p);
+    }
+
+    return linkoutput(netif, p);
+}
+
 void rt_tcp_dump_thread(void *param)
 {
-    struct rt_ip_mess *q;
+    struct rt_ip_mess *p;
     int i = 0, j = 0;
     rt_uint32_t mbval;
     rt_uint8_t *ptr;
@@ -192,13 +198,13 @@ void rt_tcp_dump_thread(void *param)
     int res = -1;
     while (1)
     {
-        q = rt_recv_ip_mess();
+        p = rt_recv_ip_mess();
 
-        if (q != RT_NULL)
+        if (p != RT_NULL)
         {
             //  rt_kprintf("malloc ok\n");
 
-            file = rt_creat_pcap_file(q);
+            file = rt_creat_pcap_file(p);
 //            if (res == -1)
 //                res = rt_save_pcap_file(file, "s5.pcap");
 
@@ -214,9 +220,9 @@ void rt_tcp_dump_thread(void *param)
             rt_kprintf("%x ", file->p_h.ts.tv_sec);
             rt_kprintf("%x ", file->p_h.len);
             rt_kprintf("%x ", file->p_h.caplen);
-            ptr = q->payload;
+            ptr = p->payload;
 
-            for (j = 0; j < q->len; j++)
+            for (j = 0; j < p->len; j++)
             {
                 if ((i % 8) == 0)
                 {
@@ -233,7 +239,7 @@ void rt_tcp_dump_thread(void *param)
             }
             rt_kprintf("\n\n");
 
-            rt_del_ip_mess(q);
+            rt_del_ip_mess(p);
             rt_del_pcap_file(file);
         }
         else
@@ -241,4 +247,19 @@ void rt_tcp_dump_thread(void *param)
             return;
         }
     }
+}
+
+int rt_tcpdump_init()
+{    
+    _netif = netif_find("e0");
+    
+    if (_netif == RT_NULL)
+    {
+        return -1;
+    }
+    linkoutput = _netif->linkoutput;
+    
+    _netif->linkoutput = rt_send_ip_mess;
+    
+    return 0;
 }
