@@ -30,7 +30,7 @@
 #include <stdio.h>
 
 extern rt_mailbox_t tcpdump_mb;
-static netif_linkoutput_fn linkoutput;
+static netif_linkoutput_fn _linkoutput;
 static struct netif *_netif;
 
 #if 1
@@ -251,15 +251,15 @@ void rt_tcp_dump_thread(void *param)
 
 int rt_tcpdump_init()
 {    
-    _netif = netif_find("e0");
+    _netif = netif_find("e0");	
     
     if (_netif == RT_NULL)
     {
         return -1;
     }
-    linkoutput = _netif->linkoutput;
+    _linkoutput = _netif->linkoutput;
     
-    _netif->linkoutput = rt_send_ip_mess;
+    _netif->linkoutput = rt_send_ip_mess;	//	
     
     return 0;
 }

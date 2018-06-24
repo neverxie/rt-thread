@@ -101,9 +101,7 @@
         <sRunDeb>0</sRunDeb>
         <sLrtime>0</sLrtime>
         <bEvRecOn>1</bEvRecOn>
-        <bSchkAxf>0</bSchkAxf>
-        <bTchkAxf>0</bTchkAxf>
-        <nTsel>4</nTsel>
+        <nTsel>3</nTsel>
         <sDll></sDll>
         <sDllPa></sDllPa>
         <sDlgDll></sDlgDll>
@@ -117,10 +115,6 @@
         <pMon>Segger\JL2CM3.dll</pMon>
       </DebugOpt>
       <TargetDriverDllRegistry>
-        <SetRegEntry>
-          <Number>0</Number>
-          <Key>DLGUARM</Key>
-        </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGDARM</Key>
@@ -203,10 +197,6 @@
       <pszMrule></pszMrule>
       <pSingCmds></pSingCmds>
       <pMultCmds></pMultCmds>
-      <pMisraNamep></pMisraNamep>
-      <pszMrulep></pszMrulep>
-      <pSingCmdsp></pSingCmdsp>
-      <pMultCmdsp></pMultCmdsp>
     </TargetOption>
   </Target>
 
@@ -280,7 +270,7 @@
 
   <Group>
     <GroupName>Drivers</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1172,7 +1162,7 @@
 
   <Group>
     <GroupName>dstr</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1204,7 +1194,7 @@
 
   <Group>
     <GroupName>jsmn</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1256,7 +1246,7 @@
 
   <Group>
     <GroupName>Kernel</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
