@@ -21,11 +21,11 @@
 
 @echo off 
 
-if not "%1" == "" goto debugFile 
+if not "%~1" == "" goto debugFile 
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\common\bin\cspybat" -f "D:\Proj_DRMP\Firmware\bsp\stm32f411RE\settings\project.Debug.general.xcl" --backend -f "D:\Proj_DRMP\Firmware\bsp\stm32f411RE\settings\project.Debug.driver.xcl" 
+"C:\Develop\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\never\Work\git\rt-thread\bsp\stm32f411-nucleo\settings\project.Debug.general.xcl" --backend -f "C:\Users\never\Work\git\rt-thread\bsp\stm32f411-nucleo\settings\project.Debug.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\common\bin\cspybat" -f "D:\Proj_DRMP\Firmware\bsp\stm32f411RE\settings\project.Debug.general.xcl" "--debug_file=%1" --backend -f "D:\Proj_DRMP\Firmware\bsp\stm32f411RE\settings\project.Debug.driver.xcl" 
+"C:\Develop\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\never\Work\git\rt-thread\bsp\stm32f411-nucleo\settings\project.Debug.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\never\Work\git\rt-thread\bsp\stm32f411-nucleo\settings\project.Debug.driver.xcl" 
 
 @echo off 
 :end

@@ -1,14 +1,14 @@
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\arm\bin\armproc.dll" 
+"C:\Develop\IAR Systems\Embedded Workbench 8.0\arm\bin\armproc.dll" 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\arm\bin\armstlink.dll" 
+"C:\Develop\IAR Systems\Embedded Workbench 8.0\arm\bin\armjlink2.dll" 
 
-"D:\Proj_DRMP\Firmware\bsp\stm32f411RE\build\Exe\rtthread.out" 
+"C:\Users\never\Work\git\rt-thread\bsp\stm32f411-nucleo\build\Exe\rtthread.out" 
 
---plugin "C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\arm\bin\armbat.dll" 
+--plugin "C:\Develop\IAR Systems\Embedded Workbench 8.0\arm\bin\armbat.dll" 
 
---device_macro "C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\arm\config\debugger\ST\STM32F4xx.dmac" 
+--device_macro "C:\Develop\IAR Systems\Embedded Workbench 8.0\arm\config\debugger\ST\STM32F4xx.dmac" 
 
---flash_loader "C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\arm\config\flashloader\ST\FlashSTM32F411xE.board" 
+--flash_loader "C:\Develop\IAR Systems\Embedded Workbench 8.0\arm\config\flashloader\ST\FlashSTM32F411xE.board" 
 
 
 
