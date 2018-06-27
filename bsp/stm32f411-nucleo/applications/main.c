@@ -12,9 +12,13 @@
  * 2015-07-29     Arda.Fu      first implementation
  */
 #include <rtthread.h>
+#include "spi_flash.h"
+#include "spi_flash_sfud.h"
 
 int main(void)
 {
-  /* user app entry */
+    /* user app entry */
+    rt_sfud_flash_probe("W25Q128", "spi20"); 
+
   return 0;
 }
