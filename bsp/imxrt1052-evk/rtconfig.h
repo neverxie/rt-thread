@@ -193,8 +193,6 @@
 
 /* system packages */
 
-/* RT-Thread GUI Engine */
-
 
 /* peripheral libraries and drivers */
 
