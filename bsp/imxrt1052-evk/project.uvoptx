@@ -73,7 +73,7 @@
         <LExpSel>0</LExpSel>
       </OPTXL>
       <OPTFL>
-        <tvExp>1</tvExp>
+        <tvExp>0</tvExp>
         <tvExpOptDlg>0</tvExpOptDlg>
         <IsCurrentTarget>1</IsCurrentTarget>
       </OPTFL>
@@ -211,6 +211,7 @@
   </Target>
 
   <Group>
+<<<<<<< HEAD
     <GroupName>Applications</GroupName>
     <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
@@ -2535,6 +2536,8 @@
   </Group>
 
   <Group>
+=======
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
     <GroupName>::CMSIS</GroupName>
     <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>

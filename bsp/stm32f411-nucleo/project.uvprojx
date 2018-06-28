@@ -10,8 +10,12 @@
       <TargetName>rt-thread_stm32f4xx</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
+<<<<<<< HEAD
       <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
+=======
+      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32F411RETx</Device>
@@ -337,7 +341,11 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER, STM32F411xE</Define>
               <Undefine></Undefine>
+<<<<<<< HEAD
               <IncludePath>applications;.;drivers;Libraries\CMSIS\Device\ST\STM32F4xx\Include;Libraries\CMSIS\Include;Libraries\STM32F4xx_HAL_Driver\Inc;..\..\include;..\..\libcpu\arm\cortex-m4;..\..\libcpu\arm\common;..\..\components\dfs\include;..\..\components\dfs\filesystems\devfs;..\..\components\dfs\filesystems\elmfat;..\..\components\drivers\include;..\..\components\drivers\spi;..\..\components\drivers\include;..\..\components\drivers\spi\sfud\inc;..\..\components\drivers\include;..\..\components\finsh</IncludePath>
+=======
+              <IncludePath>applications;.;drivers;Libraries\CMSIS\Device\ST\STM32F4xx\Include;Libraries\CMSIS\Include;Libraries\STM32F4xx_HAL_Driver\Inc;..\..\include;..\..\libcpu\arm\cortex-m4;..\..\libcpu\arm\common;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\finsh</IncludePath>
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
             </VariousControls>
           </Cads>
           <Aads>
@@ -371,7 +379,11 @@
             <ScatterFile>.\stm32_rom.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
+<<<<<<< HEAD
             <Misc> --keep *.o(.rti_fn.*)   --keep *.o(FSymTab) --keep *.o(VSymTab) </Misc>
+=======
+            <Misc> --keep *.o(.rti_fn.*)   --keep *.o(FSymTab)</Misc>
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
           </LDads>
@@ -382,6 +394,7 @@
           <GroupName>Applications</GroupName>
           <Files>
             <File>
+<<<<<<< HEAD
               <FileName>device_test.c</FileName>
               <FileType>1</FileType>
               <FilePath>applications\device_test.c</FilePath>
@@ -400,6 +413,11 @@
               <FileName>m26_usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\applications\m26_usart.c</FilePath>
+=======
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>applications\main.c</FilePath>
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
             </File>
           </Files>
         </Group>
@@ -412,6 +430,7 @@
               <FilePath>drivers\board.c</FilePath>
             </File>
             <File>
+<<<<<<< HEAD
               <FileName>drv_spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>drivers\drv_spi.c</FilePath>
@@ -422,6 +441,8 @@
               <FilePath>drivers\drv_spi_flash.c</FilePath>
             </File>
             <File>
+=======
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
               <FileName>drv_usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>drivers\drv_usart.c</FilePath>
@@ -885,6 +906,7 @@
               <FileName>div0.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\libcpu\arm\common\div0.c</FilePath>
+<<<<<<< HEAD
             </File>
             <File>
               <FileName>showmem.c</FileName>
@@ -896,6 +918,9 @@
         <Group>
           <GroupName>Filesystem</GroupName>
           <Files>
+=======
+            </File>
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
             <File>
               <FileName>dfs.c</FileName>
               <FileType>1</FileType>
@@ -929,12 +954,16 @@
             <File>
               <FileName>ff.c</FileName>
               <FileType>1</FileType>
+<<<<<<< HEAD
               <FilePath>..\..\components\dfs\filesystems\elmfat\ff.c</FilePath>
             </File>
             <File>
               <FileName>ccsbcs.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\components\dfs\filesystems\elmfat\option\ccsbcs.c</FilePath>
+=======
+              <FilePath>..\..\libcpu\arm\common\showmem.c</FilePath>
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
             </File>
           </Files>
         </Group>
@@ -1014,6 +1043,7 @@
               <FileName>serial.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\components\drivers\serial\serial.c</FilePath>
+<<<<<<< HEAD
             </File>
             <File>
               <FileName>spi_core.c</FileName>
@@ -1039,6 +1069,8 @@
               <FileName>sfud_sfdp.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\components\drivers\spi\sfud\src\sfud_sfdp.c</FilePath>
+=======
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
             </File>
             <File>
               <FileName>completion.c</FileName>
@@ -1089,6 +1121,7 @@
               <FileName>cmd.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\components\finsh\cmd.c</FilePath>
+<<<<<<< HEAD
             </File>
             <File>
               <FileName>finsh_compiler.c</FileName>
@@ -1125,20 +1158,35 @@
               <FileType>1</FileType>
               <FilePath>..\..\components\finsh\finsh_parser.c</FilePath>
             </File>
+=======
+            </File>
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
             <File>
-              <FileName>finsh_var.c</FileName>
+              <FileName>msh.c</FileName>
               <FileType>1</FileType>
+<<<<<<< HEAD
               <FilePath>..\..\components\finsh\finsh_var.c</FilePath>
+=======
+              <FilePath>..\..\components\finsh\msh.c</FilePath>
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
             </File>
             <File>
-              <FileName>finsh_vm.c</FileName>
+              <FileName>msh_cmd.c</FileName>
               <FileType>1</FileType>
+<<<<<<< HEAD
               <FilePath>..\..\components\finsh\finsh_vm.c</FilePath>
+=======
+              <FilePath>..\..\components\finsh\msh_cmd.c</FilePath>
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
             </File>
             <File>
-              <FileName>finsh_token.c</FileName>
+              <FileName>msh_file.c</FileName>
               <FileType>1</FileType>
+<<<<<<< HEAD
               <FilePath>..\..\components\finsh\finsh_token.c</FilePath>
+=======
+              <FilePath>..\..\components\finsh\msh_file.c</FilePath>
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
             </File>
           </Files>
         </Group>

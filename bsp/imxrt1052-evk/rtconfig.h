@@ -64,6 +64,7 @@
 #define FINSH_CMD_SIZE 80
 #define FINSH_USING_MSH
 #define FINSH_USING_MSH_DEFAULT
+#define FINSH_ARG_MAX 10
 
 /* Device virtual file system */
 
@@ -160,11 +161,14 @@
 /* RT-Thread online packages */
 
 /* IoT - internet of things */
+<<<<<<< HEAD
 
 #define PKG_USING_JSMN
 #define PKG_USING_JSMN_LATEST_VERSION
 
 /* jsmn Options */
+=======
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
 
 #define JSMN_USING_EXAMPLE
 
@@ -211,7 +215,16 @@
 /* sample package */
 
 
+/* sample package */
+
+
 /* example package: hello */
+
+
+/* Privated Packages of RealThread */
+
+
+/* Network Utilities */
 
 #define SOC_IMXRT1052
 #define BOARD_USING_QSPIFLASH

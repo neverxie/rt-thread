@@ -16,10 +16,7 @@
 #define RT_DEBUG_INIT 0
 #define RT_DEBUG_THREAD 0
 #define RT_USING_HOOK
-#define IDLE_THREAD_STACK_SIZE 256
-#define RT_USING_TIMER_SOFT
-#define RT_TIMER_THREAD_PRIO 4
-#define RT_TIMER_THREAD_STACK_SIZE 512
+#define IDLE_THREAD_STACK_SIZE 512
 
 /* Inter-Thread communication */
 
@@ -62,6 +59,7 @@
 #define FINSH_THREAD_PRIORITY 20
 #define FINSH_THREAD_STACK_SIZE 4096
 #define FINSH_CMD_SIZE 80
+<<<<<<< HEAD
 
 /* Device virtual file system */
 
@@ -83,15 +81,26 @@
 #define RT_DFS_ELM_MAX_SECTOR_SIZE 4096
 #define RT_DFS_ELM_REENTRANT
 #define RT_USING_DFS_DEVFS
+=======
+#define FINSH_USING_MSH
+#define FINSH_USING_MSH_DEFAULT
+#define FINSH_USING_MSH_ONLY
+
+/* Device virtual file system */
+
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
 
 /* Device Drivers */
 
 #define RT_USING_DEVICE_IPC
 #define RT_USING_SERIAL
+<<<<<<< HEAD
 #define RT_USING_SPI
 #define RT_USING_SFUD
 #define RT_SFUD_USING_SFDP
 #define RT_SFUD_USING_FLASH_INFO_TABLE
+=======
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
 
 /* Using USB */
 
@@ -150,6 +159,12 @@
 
 
 /* sample package */
+<<<<<<< HEAD
+=======
+
+
+/* example package: hello */
+>>>>>>> 614b2e389c682d218711692aecc93fef39ec5ac2
 
 
 /* example package: hello */
