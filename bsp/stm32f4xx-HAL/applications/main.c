@@ -13,10 +13,14 @@
  */
 #include <rtthread.h>
 #include <board.h>
+#include "spi_flash.h"
+#include "spi_flash_sfud.h"
+#include "drv_spi.h"
 
 int main(void)
 {
     /* user app entry */
-
+    stm32_spi_bus_attach_device(33, "spi2", "spi20");
+    rt_sfud_flash_probe("W25Q128", "spi20"); 
     return 0;
 }
