@@ -92,21 +92,9 @@
 #define RT_SERIAL_TX_DATAQUEUE_LWM      30
 
 /* Default config for serial_configure structure */
-#define RT_SERIAL2_CONFIG_DEFAULT           \
+#define RT_SERIAL_CONFIG_DEFAULT           \
 {                                          \
     BAUD_RATE_115200, /* 115200 bits/s */  \
-    DATA_BITS_8,      /* 8 databits */     \
-    STOP_BITS_1,      /* 1 stopbit */      \
-    PARITY_NONE,      /* No parity  */     \
-    BIT_ORDER_LSB,    /* LSB first sent */ \
-    NRZ_NORMAL,       /* Normal mode */    \
-    RT_SERIAL_RB_BUFSZ, /* Buffer size */  \
-    0                                      \
-}
-
-#define RT_SERIAL1_CONFIG_DEFAULT           \
-{                                          \
-    BAUD_RATE_9600,   /* 9600 bits/s */  \
     DATA_BITS_8,      /* 8 databits */     \
     STOP_BITS_1,      /* 1 stopbit */      \
     PARITY_NONE,      /* No parity  */     \
