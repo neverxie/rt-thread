@@ -246,8 +246,6 @@ free_and_return:
   return ERR_OK;
 }
 
-extern int rt_icmp_filter(struct pbuf* recv);
-extern void rt_pbufcpy(struct pbuf *p);
 /**
  * @ingroup ethernet
  * Send an ethernet packet on the network using netif->linkoutput().
