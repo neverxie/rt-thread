@@ -27,25 +27,41 @@
 /* header file content */
 
 #include <rtdef.h>
-#include "netif/ethernetif.h"
+#include <ethernetif.h>
 
-struct rt_ip_mess
+#define TCPDUMP_MAX_MSG      (10)
+
+#define PCAP_FILE_ID                (0xA1B2C3D4)
+#define PCAP_VERSION_MAJOR          (0x200)
+#define PCAP_VERSION_MINOR          (0x400)
+#define GREENWICH_MEAN_TIME         (0)  
+#define PRECISION_OF_TIME_STAMP     (0)
+#define MAX_LENTH_OF_CAPTURE_PKG    (0xFFFF)
+#define ETHERNET                    (1)
+
+union rt_u32_data
 {
-    rt_uint8_t *payload;
-    rt_uint16_t len;
+    rt_uint32_t u32byte;
+    rt_uint8_t  a[4];
 };
-typedef struct rt_ip_mess rt_ip_mess_t;
+
+union rt_u16_data
+{
+    rt_uint16_t u16byte;
+    rt_uint8_t  a[2];
+};
 
 struct rt_pcap_file_header
 {
     rt_uint32_t magic;           // 0xa1b2c3d4
     rt_uint16_t version_major;   // 0x0200
     rt_uint16_t version_minor;   // 0x0400
-    rt_int32_t thiszone;         // 0
+    rt_int32_t  thiszone;        // GMT
     rt_uint32_t sigfigs;         //
     rt_uint32_t snaplen;         //
     rt_uint32_t linktype;        // 1
 };
+typedef struct rt_pcap_file_header  rt_pcap_file_header_t;
 
 struct rt_timeval
 {
@@ -53,7 +69,7 @@ struct rt_timeval
     rt_uint32_t tv_msec;         //    os_tick
 };
 
-struct rt_pcap_header
+struct rt_pcap_pkthdr
 {
     struct rt_timeval ts;
     rt_uint32_t caplen;
@@ -63,20 +79,20 @@ struct rt_pcap_header
 struct rt_pcap_file
 {
     struct rt_pcap_file_header   p_f_h;
-    struct rt_pcap_header        p_h;
-    void (*time)(rt_uint8_t flag);
+    struct rt_pcap_pkthdr        p_pktdr;
     void *ip_mess;
-    size_t ip_len;
+    rt_size_t ip_len;
 };
-typedef struct rt_pcap_file    rt_pcap_file_t;
 
-#define PCAP_HEADER_LENGTH    (8)
+struct tcpdump_msg 
+{
+    void *pbuf;
+    rt_uint32_t sec;
+    rt_uint32_t msec;
+};
 
-rt_pcap_file_t *rt_creat_pcap_file(rt_ip_mess_t *pkg);
-int rt_del_pcap_file(rt_pcap_file_t *file);
-int rt_save_pcap_file(rt_pcap_file_t *file, const char *filename);
-rt_ip_mess_t *rt_recv_ip_mess(void);
-//void rt_send_ip_mess(struct pbuf *p);
-int rt_del_ip_mess(struct rt_ip_mess *pkg);
+#define PCAP_FILE_FORMAT_SIZE   (sizeof(struct rt_pcap_file_header) + sizeof(struct rt_pcap_pkthdr))
+
+static void rt_struct_to_u8(struct rt_pcap_file *file, rt_uint8_t *buf);
 
 #endif /* __FILE_H__ */

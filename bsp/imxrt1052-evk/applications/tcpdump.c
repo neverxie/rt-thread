@@ -27,239 +27,406 @@
 #include <dfs_posix.h>
 #include <rtdef.h>
 #include "tcpdump.h"
-#include <stdio.h>
 
-extern rt_mailbox_t tcpdump_mb;
-static netif_linkoutput_fn _linkoutput;
-static struct netif *_netif;
+static struct netif *netif;
+static struct rt_messagequeue *mq;
+static netif_linkoutput_fn link_output;
+static char *filename;
+static rt_uint32_t tcpdump_flag;
 
-#if 1
-rt_uint8_t ip[74] =
+#define TCPDUMP_WRITE_FLAG (0x1 << 2)
+#define TCPDUMP_DEFAULT_NAME    ("tcpdump_file.pcap")
+#define TCPDUMP_FILE_SIZE(_file) \
+    (sizeof(struct rt_pcap_file) + _file->ip_len) 
+
+#define TCPDUMP_DEBUG
+#ifdef TCPDUMP_DEBUG
+#define __is_print(ch) ((unsigned int)((ch) - ' ') < 127u - ' ')
+static void print_hex(const rt_uint8_t *ptr, rt_size_t buflen)
 {
-    0x00, 0x04, 0x9f, 0x05, 0x44, 0xe5, 0xe0, 0xd5, 0x5e, 0x71, 0x99, 0x95, 0x08, 0x00, 0x45, 0x00,
-    0x00, 0x3c, 0x28, 0x6a, 0x00, 0x00, 0x80, 0x01, 0x00, 0x00, 0xc0, 0xa8, 0x01, 0x6d, 0xc0, 0xa8,
-    0x01, 0x1e, 0x08, 0x00, 0x4d, 0x1a, 0x00, 0x01, 0x00, 0x41, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66,
-    0x67, 0x68, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, 0x6f, 0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76,
-    0x77, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69
-};
+    unsigned char *buf = (unsigned char*)ptr;
+    int i, j;
+
+    for (i=0; i<buflen; i+=16) 
+    {
+        rt_kprintf("%08X: ", i);
+
+        for (j=0; j<16; j++)
+            if (i+j < buflen)
+                rt_kprintf("%02X ", buf[i+j]);
+            else
+                rt_kprintf("   ");
+        rt_kprintf(" ");
+
+        for (j=0; j<16; j++)
+            if (i+j < buflen)
+                rt_kprintf("%c", __is_print(buf[i+j]) ? buf[i+j] : '.');
+        rt_kprintf("\n");
+    }
+}
+
+static void rt_tcpdump_file_print(struct rt_pcap_file *file)
+{
+    rt_uint8_t buf[PCAP_FILE_FORMAT_SIZE] = {0};
+    
+    if (file == RT_NULL)
+    {
+        rt_kprintf("file is null\n");
+        return;
+    }
+    rt_kprintf("\n\n");
+    rt_kprintf("-------------------------file header---------------------\n");
+    rt_kprintf("magi       major  minor  zone   sigfigs  snaplen linktype\n");
+    rt_kprintf("0x%08x ", file->p_f_h.magic);
+    rt_kprintf("0x%04x ", file->p_f_h.version_major);
+    rt_kprintf("0x%04x ", file->p_f_h.version_minor);
+    rt_kprintf("0x%04x ", file->p_f_h.thiszone);
+    rt_kprintf("0x%04x   ", file->p_f_h.sigfigs);
+    rt_kprintf("0x%04x  ", file->p_f_h.snaplen);
+    rt_kprintf("0x%04x\n\n", file->p_f_h.linktype);
+
+    rt_kprintf("       msec         sec         len      caplen \n");
+    rt_kprintf("%11d ", file->p_pktdr.ts.tv_msec);
+    rt_kprintf("%11d ", file->p_pktdr.ts.tv_sec);
+    rt_kprintf("%11d ", file->p_pktdr.len);
+    rt_kprintf("%11d \n\n", file->p_pktdr.caplen);
+
+    rt_struct_to_u8(file, buf);
+    print_hex(buf, sizeof(buf));
+    print_hex(file->ip_mess, file->ip_len);
+    rt_kprintf("---------------------------end---------------------------\n");
+    rt_kprintf("\n\n");
+}
 #endif
 
-rt_pcap_file_t *rt_creat_pcap_file(rt_ip_mess_t *pkg)
+static struct rt_pcap_file *rt_tcpdump_pcap_file_create(struct pbuf *p)
 {
-    rt_pcap_file_t *file = RT_NULL;
-
-    file = rt_malloc(sizeof(struct rt_pcap_file) + pkg->len);
+    struct rt_pcap_file *file = RT_NULL;
+    struct pbuf *pbuf = p;
+    struct tcpdump_msg msg;
+    rt_uint8_t *ip_mess = RT_NULL;
+    rt_size_t ip_len = p->tot_len;
+    
+    file = rt_malloc(sizeof(struct rt_pcap_file) + ip_len);
     if (file == RT_NULL)
         return RT_NULL;
     file->ip_mess = (rt_uint8_t *)file + sizeof(struct rt_pcap_file);
+    file->ip_len = ip_len;
+    
+    file->p_f_h.magic = PCAP_FILE_ID;
+    file->p_f_h.version_major = PCAP_VERSION_MAJOR;
+    file->p_f_h.version_minor = PCAP_VERSION_MINOR;
+    file->p_f_h.thiszone = GREENWICH_MEAN_TIME;
+    file->p_f_h.sigfigs = PRECISION_OF_TIME_STAMP;
+    file->p_f_h.snaplen = MAX_LENTH_OF_CAPTURE_PKG;
+    file->p_f_h.linktype = ETHERNET;
 
-    file->p_f_h.magic = 0xa1b2c3d4;
-    file->p_f_h.version_major = 0x200;
-    file->p_f_h.version_minor = 0x400;
-    file->p_f_h.thiszone = 0;
-    file->p_f_h.sigfigs = 0;
-    file->p_f_h.snaplen = 0xff;
-    file->p_f_h.linktype = 1;
+    file->p_pktdr.ts.tv_sec = msg.sec;      //  os_tick
+    file->p_pktdr.ts.tv_msec = msg.msec;    //  os_tick
+    file->p_pktdr.caplen = ip_len;          //  ip len
+    file->p_pktdr.len = ip_len;             //
 
-    file->p_h.ts.tv_sec = 0;   //  os_tick
-    file->p_h.ts.tv_msec = 0;  //  os_tick
-    file->p_h.caplen = pkg->len;   //  ip len
-    file->p_h.len = pkg->len;      //
-
-    rt_memcpy(file->ip_mess, pkg->payload, pkg->len);
-    file->ip_len = pkg->len;
+    ip_mess = p->payload;
+    while (p) 
+    {
+        rt_memcpy(file->ip_mess, ip_mess, p->len);
+        ip_mess += p->len;
+        p = p->next;
+    }
+    pbuf_free(pbuf);
 
     return file;
 }
 
-int rt_del_pcap_file(rt_pcap_file_t *file)
+static rt_err_t rt_tcpdump_pcap_file_del(struct rt_pcap_file *file)
 {
     if (file == RT_NULL)
-        return -1;
+        return -RT_ERROR;
     rt_free(file);
-    return 0;
+    return RT_EOK;
 }
 
-int rt_save_pcap_file(rt_pcap_file_t *file, const char *filename)
+static rt_err_t rt_tcpdump_pcap_file_write(struct rt_pcap_file *file, rt_size_t len)
 {
     int fd, length;
 
-    fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0);
-    if (fd < 0)
+    if (filename == RT_NULL) 
     {
-        rt_kprintf("open file for write failed\n");
-        return -1;
+        rt_kprintf("file name failed\n");
+        return -RT_ERROR;
     }
 
-    length = write(fd, ip, sizeof(ip));
-    if (length != sizeof(ip))
+    /* write and append */
+    fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0);
+    if (fd < 0) 
+    {
+        rt_kprintf("open file for write failed\n");
+        return -RT_ERROR;
+    }
+
+    /* write pcap file */
+    length = write(fd, file, len);
+    if (length != len)
     {
         rt_kprintf("write data failed\n");
         close(fd);
-        return -1;
+        return -RT_ERROR;
     }
     close(fd);
-//    /* write file */
-//    length = write(fd, file, sizeof(rt_pcap_file_t) - PCAP_HEADER_LENGTH);
-//    if (length != sizeof(rt_pcap_file_t) - PCAP_HEADER_LENGTH)
-//    {
-//        rt_kprintf("write data failed\n");
-//        close(fd);
-//        return -1;
-//    }
-//    rt_kprintf("fd:%d\n", fd);
-//    close(fd);
 
-//    fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0);
-//    if (fd < 0)
-//    {
-//        rt_kprintf("open file for append write failed\n");
-//        return -1;
-//    }
-//    length = write(fd, ip, sizeof(ip));
-//    if (length != file->ip_len)
-//    {
-//        rt_kprintf("append write data failed\n");
-//        close(fd);
-//        return -1;
-//    }
-//    close(fd);
-
-    rt_kprintf("read/write done.\n");
-    return 0;
+    rt_kprintf("tcpdump file write done.\n");
+    return RT_EOK;
 }
 
-rt_ip_mess_t *rt_recv_ip_mess(void)
+static struct pbuf *rt_tcpdump_ip_mess_recv(void)
 {
-    struct pbuf *p1, *p2;
-    rt_ip_mess_t *pkg;
-    rt_uint8_t *ptr;
-    rt_uint32_t mbval;
+    struct tcpdump_msg msg;
+    struct pbuf *p;
 
-    if (rt_mb_recv(tcpdump_mb, &mbval, RT_WAITING_FOREVER) == RT_EOK)
+    if (rt_mq_recv(mq, &msg, sizeof(msg), RT_WAITING_FOREVER) == RT_EOK) 
     {
-        p1 = (struct pbuf *)mbval;
-        p2 = p1;
-        
-        pkg = rt_malloc(sizeof(struct rt_ip_mess) + p1->tot_len);
-        if (pkg == RT_NULL)
-            return RT_NULL;
-
-        pkg->payload = (rt_uint8_t *)pkg + sizeof(struct rt_ip_mess);
-        pkg->len = p1->tot_len;
-
-        ptr = pkg->payload;
-
-        while (p1)
-        {
-            rt_memcpy(ptr, p1->payload, p1->len);
-            ptr += p1->len;
-            p1 = p1->next;
-        }
-//        pbuf_free(p2);
-        return pkg;
-    }
-    else
+        p = msg.pbuf;
+        return p;
+    } 
+    else 
     {
         return RT_NULL;
     }
 }
 
-int rt_del_ip_mess(struct rt_ip_mess *pkg)
+static err_t _netif_linkoutput(struct netif *netif, struct pbuf *p)
 {
-    if (pkg == RT_NULL)
-    {
-        return -1;
-    }
-    else
-    {
-        rt_free(pkg);
-        return 0;
-    }
-}
+    struct tcpdump_msg msg;
+    rt_uint32_t tick = rt_tick_get();
 
-err_t rt_send_ip_mess(struct netif *netif, struct pbuf *p)
-{
-    if (rt_mb_send(tcpdump_mb, (rt_uint32_t)p) == RT_EOK)
+    if (p != RT_NULL) 
     {
         pbuf_ref(p);
-    }
+        msg.pbuf = p;
+        msg.sec  = tick / 1000;
+        msg.msec = tick % 1000;
 
-    return linkoutput(netif, p);
+        if (rt_mq_send(mq, &msg, sizeof(msg)) != RT_EOK) 
+        {
+            rt_kprintf("mq send failed\n");
+            pbuf_free(p);
+            return -RT_ERROR;
+        }
+    }
+    return link_output(netif, p);
 }
 
-void rt_tcp_dump_thread(void *param)
+static void rt_struct_to_u8(struct rt_pcap_file *file, rt_uint8_t *buf)
 {
-    struct rt_ip_mess *p;
-    int i = 0, j = 0;
-    rt_uint32_t mbval;
-    rt_uint8_t *ptr;
-    rt_pcap_file_t *file;
-    int res = -1;
-    while (1)
+    union rt_u32_data u32_data;
+    union rt_u16_data u16_data;
+    int k, i, j;
+    
+    struct rt_pcap_file_header *p_p_f_h = (struct rt_pcap_file_header *)file;
+    rt_uint32_t *p32_p_f_h = (rt_uint32_t *)p_p_f_h + 2;
+
+    struct rt_pcap_pkthdr *p32_pktdr = (struct rt_pcap_pkthdr *)(p_p_f_h + 1);
+    rt_uint32_t *p32 = (rt_uint32_t *)p32_pktdr;
+
+    rt_uint16_t *p16 = (rt_uint16_t *)p_p_f_h + 2;
+
+    /* struct rt_pcap_file_header. magic */
+    u32_data.u32byte = 0;
+    u32_data.u32byte = file->p_f_h.magic;
+    for (k = 3; k != -1; k--)
+        buf[k] = u32_data.a[k];
+    
+    /* struct rt_pcap_file_header. version_major & version_minor*/
+    for (i = 0, j = 4; i < 4; i++)
     {
-        p = rt_recv_ip_mess();
-
-        if (p != RT_NULL)
+        u16_data.u16byte = 0;
+        u16_data.u16byte = *(p16 + 0);
+        for (k = 1; k != -1; k--) 
         {
-            //  rt_kprintf("malloc ok\n");
-
-            file = rt_creat_pcap_file(p);
-//            if (res == -1)
-//                res = rt_save_pcap_file(file, "s5.pcap");
-
-            rt_kprintf("%x ", file->p_f_h.magic);
-            rt_kprintf("%x ", file->p_f_h.version_major);
-            rt_kprintf("%x ", file->p_f_h.version_minor);
-            rt_kprintf("%x ", file->p_f_h.thiszone);
-            rt_kprintf("%x ", file->p_f_h.sigfigs);
-            rt_kprintf("%x ", file->p_f_h.snaplen);
-            rt_kprintf("%x ", file->p_f_h.linktype);
-
-            rt_kprintf("%x ", file->p_h.ts.tv_msec);
-            rt_kprintf("%x ", file->p_h.ts.tv_sec);
-            rt_kprintf("%x ", file->p_h.len);
-            rt_kprintf("%x ", file->p_h.caplen);
-            ptr = p->payload;
-
-            for (j = 0; j < p->len; j++)
-            {
-                if ((i % 8) == 0)
-                {
-                    rt_kprintf("  ");
-                }
-                if ((i % 16) == 0)
-                {
-                    rt_kprintf("\r\n");
-                }
-                rt_kprintf("%02x ", *ptr);
-
-                i++;
-                ptr++;
-            }
-            rt_kprintf("\n\n");
-
-            rt_del_ip_mess(p);
-            rt_del_pcap_file(file);
+            buf[k+j] = u16_data.a[k];
         }
-        else
+        j += 4;
+    }
+
+    /* struct rt_pcap_header.thiszone ~ linktype */
+    for (i = 0, j = 8; i < 4; i++) 
+    {
+        u32_data.u32byte = 0;
+        u32_data.u32byte = *(p32_p_f_h + i);
+        for (k = 3; k != -1; k--) 
         {
-            return;
+            buf[k+j] = u32_data.a[k];
         }
+        j += 4;
+    }
+    /* struct rt_pcap_header */
+    for (i = 0, j = 24; i < 4; i++) 
+    {
+        u32_data.u32byte = 0;
+        u32_data.u32byte = *(p32 + i);
+        for (k = 3; k != -1; k--) 
+        {
+            buf[k+j] = u32_data.a[k];
+        }
+        j += 4;
     }
 }
 
-int rt_tcpdump_init()
-{    
-    _netif = netif_find("e0");	
-    
-    if (_netif == RT_NULL)
+static void rt_tcp_dump_thread(void *param)
+{
+    struct rt_pcap_file *file = RT_NULL;
+    struct pbuf *p = RT_NULL;
+
+    while (1) 
     {
-        return -1;
+        p = rt_tcpdump_ip_mess_recv();
+
+        file = rt_tcpdump_pcap_file_create(p);
+
+        if ((tcpdump_flag & TCPDUMP_WRITE_FLAG) && (file != RT_NULL))
+        {
+            if (rt_tcpdump_pcap_file_write(file, TCPDUMP_FILE_SIZE(file)) != RT_EOK)
+            {
+                rt_kprintf("tcp dump write file fail\nstop write file\n");
+                tcpdump_flag &= ~TCPDUMP_WRITE_FLAG;
+            }
+        }
+        
+#ifdef TCPDUMP_DEBUG
+        rt_tcpdump_file_print(file);
+#endif
+        rt_tcpdump_pcap_file_del(file);
     }
-    _linkoutput = _netif->linkoutput;
+}
+
+/**
+ * This function will enable to write into file system.
+ *
+ * @param none.
+ *
+ * @return none.
+ */
+void rt_tcpdump_write_enable(void)
+{
+    tcpdump_flag |= TCPDUMP_WRITE_FLAG;
+}
+
+/**
+ * This function will disable to write into file system.
+ *
+ * @param none.
+ *
+ * @return none.
+ */
+void rt_tcpdump_write_disable(void)
+{
+    tcpdump_flag &= ~TCPDUMP_WRITE_FLAG;
+}
+
+/**
+ * This function will set filename.
+ *
+ * @param name.
+ *
+ * @return none.
+ */
+void rt_tcpdump_set_filename(const char *name)
+{
+    if (filename != RT_NULL) 
+    {
+        rt_free(filename);
+    }
+
+    filename = rt_strdup(name);
+}
+
+/**
+ * This function will initialize thread, mailbox, device etc.
+ *
+ * @param none.
+ *
+ * @return status.
+ */
+int rt_tcp_dump_init(void)
+{
+    static struct eth_device *dev = RT_NULL;
+    struct rt_thread *tid = RT_NULL;
+    rt_base_t level;
     
-    _netif->linkoutput = rt_send_ip_mess;	//	
+    dev = (struct eth_device *)rt_device_find("e0");
+    if (dev == RT_NULL)
+        return -RT_ERROR;
+
+    mq = rt_mq_create("tcp_dump", sizeof(struct tcpdump_msg), TCPDUMP_MAX_MSG, RT_IPC_FLAG_FIFO);
+    if (mq == RT_NULL) 
+    {
+        rt_kprintf("mq error\n");
+        return -RT_ERROR;
+    }
+
+    tid = rt_thread_create("tcp_dump", rt_tcp_dump_thread, RT_NULL, 2048, 10, 10);
+    if (tid == RT_NULL) 
+    {
+        rt_kprintf("tcp dump thread create fail\n");
+        rt_mq_delete(mq);
+        return -RT_ERROR;
+    }
+    rt_tcpdump_set_filename("test1.pcap");
+    level = rt_hw_interrupt_disable();
+    netif = dev->netif;
+    link_output = netif->linkoutput;    //   save
+    netif->linkoutput = _netif_linkoutput;
+    rt_hw_interrupt_enable(level);
+    rt_thread_startup(tid);
+    return RT_EOK;
+}
+INIT_APP_EXPORT(rt_tcp_dump_init);
+
+/**
+ * This function will reset thread, mailbox, device etc.
+ *
+ * @param none.
+ *
+ * @return none.
+ */
+void rt_tcpdump_deinit(void)
+{
+    rt_base_t level;
     
+    level = rt_hw_interrupt_disable();
+    netif->linkoutput = link_output;
+    netif = RT_NULL;
+    rt_mq_delete(mq);
+    rt_hw_interrupt_enable(level);
+    mq = RT_NULL;
+}
+
+void tcpdump_init(void)
+{
+    rt_tcp_dump_init();
+}
+MSH_CMD_EXPORT(tcpdump_init, init);
+
+void tcpdump_deinit(void)
+{
+    rt_tcp_dump_init();
+}
+MSH_CMD_EXPORT(tcpdump_deinit, deinit);
+
+void tcpdump_save(void)
+{
+    rt_tcpdump_write_enable();
+}
+MSH_CMD_EXPORT(tcpdump_save, save);
+
+int tcpdump_name(int argc, char *argv[])
+{
+    if (argc != 2)   
+    {
+        rt_kprintf("user: tcpdump filename\n");
+    }
+    rt_tcpdump_set_filename(argv[1]);
+    rt_kprintf("set file name: %s\n", argv[1]);
     return 0;
 }
+MSH_CMD_EXPORT(tcpdump_name, my command with args);
