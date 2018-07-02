@@ -204,9 +204,7 @@ extern void rt_tcp_dump_thread(void *param);
 rt_mailbox_t tcpdump_mb;
 void rt_application_init(void)
 {
-    rt_thread_t tid;
-    rt_thread_t tid_tcpdump;
-    const char *mbt;    
+    rt_thread_t tid;    
     
 #ifdef RT_USING_HEAP
     tid = rt_thread_create("main", main_thread_entry, RT_NULL,
@@ -224,17 +222,6 @@ void rt_application_init(void)
     (void)result;
 #endif
     rt_thread_startup(tid);
-        
-	tid_tcpdump = rt_thread_create("tcpdump", rt_tcp_dump_thread, RT_NULL, 512, 10, 100);
-    RT_ASSERT(tid_tcpdump != RT_NULL);
-    rt_thread_startup(tid_tcpdump);
-    
-    tcpdump_mb = rt_mb_create(mbt, 100, RT_IPC_FLAG_FIFO);
-    if (tcpdump_mb == RT_NULL)
-    {    
-        rt_kprintf("mail error\n");
-        return;
-    }
 }
 
 int rtthread_startup(void)

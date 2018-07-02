@@ -688,7 +688,6 @@ rt_err_t rt_imxrt_eth_tx(rt_device_t dev, struct pbuf *p)
             imxrt_eth_device.tx_is_waiting = RT_TRUE;
             rt_sem_take(&imxrt_eth_device.tx_wait, RT_WAITING_FOREVER);
         }
-
     }
     while (result == kStatus_ENET_TxFrameBusy);
 
@@ -725,7 +724,7 @@ struct pbuf *rt_imxrt_eth_rx(rt_device_t dev)
                 int tick = rt_tick_get();
                 rt_kprintf("tick_start:%d\n", tick/1000);
                 rt_kprintf("tick_start:%d\n", tick%1000);
-#endif
+#endif                                                         
                 return p;
             }
             else
