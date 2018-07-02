@@ -1566,7 +1566,7 @@ rt_err_t rt_mb_recv(rt_mailbox_t mb, rt_uint32_t *value, rt_int32_t timeout)
 
     /* initialize delta tick */
     tick_delta = 0;
-    /* get current thread */
+    /* get current  thread */
     thread = rt_thread_self();
 
     RT_OBJECT_HOOK_CALL(rt_object_trytake_hook, (&(mb->parent.parent)));
