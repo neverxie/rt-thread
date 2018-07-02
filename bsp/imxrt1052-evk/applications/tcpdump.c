@@ -42,7 +42,7 @@ static rt_uint32_t tcpdump_flag;
 #define TCPDUMP_DEBUG
 #ifdef TCPDUMP_DEBUG
 #define __is_print(ch) ((unsigned int)((ch) - ' ') < 127u - ' ')
-static void print_hex(const rt_uint8_t *ptr, rt_size_t buflen)
+static void hex_dump(const rt_uint8_t *ptr, rt_size_t buflen)
 {
     unsigned char *buf = (unsigned char*)ptr;
     int i, j;
@@ -65,7 +65,7 @@ static void print_hex(const rt_uint8_t *ptr, rt_size_t buflen)
     }
 }
 
-static void rt_tcpdump_file_print(struct rt_pcap_file *file)
+static void rt_tcpdump_file_dump(struct rt_pcap_file *file)
 {
     rt_uint8_t buf[PCAP_FILE_FORMAT_SIZE] = {0};
     
@@ -92,8 +92,8 @@ static void rt_tcpdump_file_print(struct rt_pcap_file *file)
     rt_kprintf("%11d \n\n", file->p_pktdr.caplen);
 
     rt_struct_to_u8(file, buf);
-    print_hex(buf, sizeof(buf));
-    print_hex(file->ip_mess, file->ip_len);
+    hex_dump(buf, sizeof(buf));
+    hex_dump(file->ip_mess, file->ip_len);
     rt_kprintf("---------------------------end---------------------------\n");
     rt_kprintf("\n\n");
 }
@@ -293,7 +293,7 @@ static void rt_tcp_dump_thread(void *param)
         }
         
 #ifdef TCPDUMP_DEBUG
-        rt_tcpdump_file_print(file);
+        rt_tcpdump_file_dump(file);
 #endif
         rt_tcpdump_pcap_file_del(file);
     }

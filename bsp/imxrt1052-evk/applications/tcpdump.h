@@ -53,20 +53,19 @@ union rt_u16_data
 
 struct rt_pcap_file_header
 {
-    rt_uint32_t magic;           // 0xa1b2c3d4
-    rt_uint16_t version_major;   // 0x0200
-    rt_uint16_t version_minor;   // 0x0400
-    rt_int32_t  thiszone;        // GMT
-    rt_uint32_t sigfigs;         //
-    rt_uint32_t snaplen;         //
-    rt_uint32_t linktype;        // 1
+    rt_uint32_t magic;        
+    rt_uint16_t version_major;  
+    rt_uint16_t version_minor;  
+    rt_int32_t  thiszone;     
+    rt_uint32_t sigfigs;      
+    rt_uint32_t snaplen;       
+    rt_uint32_t linktype;    
 };
-typedef struct rt_pcap_file_header  rt_pcap_file_header_t;
 
 struct rt_timeval
 {
-    rt_uint32_t tv_sec;          //    os_tick
-    rt_uint32_t tv_msec;         //    os_tick
+    rt_uint32_t tv_sec;
+    rt_uint32_t tv_msec;
 };
 
 struct rt_pcap_pkthdr

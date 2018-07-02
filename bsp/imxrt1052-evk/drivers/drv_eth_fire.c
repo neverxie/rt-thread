@@ -722,9 +722,6 @@ struct pbuf *rt_imxrt_eth_rx(rt_device_t dev)
             {
 #ifdef ETH_RX_DUMP
                 packet_dump("recv", p);
-                int tick = rt_tick_get();
-                rt_kprintf("tick_start:%d\n", tick/1000);
-                rt_kprintf("tick_start:%d\n", tick%1000);
 #endif
                 return p;
             }
