@@ -20,7 +20,7 @@
  *
  * Change Logs:
  * Date           Author       Notes
- * 2018-06-21     never        the first version
+ * 2018-07-03     never        the first version
  */
 #ifndef __TCPDUMP_H_
 #define __TCPDUMP_H_
@@ -41,6 +41,7 @@
 
 #define PCAP_FILE_HEADER_SIZE       (24)
 #define PCAP_PKTHDR_SIZE            (16)    
+
 
 union rt_u32_data
 {
@@ -92,9 +93,5 @@ struct tcpdump_msg
     rt_uint32_t sec;
     rt_uint32_t msec;
 };
-
-#define PCAP_FILE_FORMAT_SIZE   (sizeof(struct rt_pcap_file_header) + sizeof(struct rt_pcap_pkthdr))
-
-static void rt_struct_to_u8(struct rt_pcap_file *file, rt_uint8_t *buf);
 
 #endif /* __FILE_H__ */
