@@ -39,7 +39,6 @@ static rt_uint32_t tcpdump_flag;
 #define TCPDUMP_FILE_SIZE(_file) \
     (sizeof(struct rt_pcap_file) + _file->ip_len) 
 
-#define TCPDUMP_DEBUG
 #ifdef TCPDUMP_DEBUG
 #define __is_print(ch) ((unsigned int)((ch) - ' ') < 127u - ' ')
 static void hex_dump(const rt_uint8_t *ptr, rt_size_t buflen)
@@ -99,43 +98,36 @@ static void rt_tcpdump_file_dump(struct rt_pcap_file *file)
 }
 #endif
 
-static struct rt_pcap_file *rt_tcpdump_pcap_file_create(struct pbuf *p)
+void rt_tcpdump_pcap_file_create(struct pbuf *p)
 {
-    struct rt_pcap_file *file = RT_NULL;
     struct pbuf *pbuf = p;
-    struct tcpdump_msg msg;
-    rt_uint8_t *ip_mess = RT_NULL;
-    rt_size_t ip_len = p->tot_len;
+    struct tcpdump_msg msg;    
+    struct rt_pcap_file file;
+    rt_uint8_t ip_len = p->tot_len;
     
-    file = rt_malloc(sizeof(struct rt_pcap_file) + ip_len);
-    if (file == RT_NULL)
-        return RT_NULL;
-    file->ip_mess = (rt_uint8_t *)file + sizeof(struct rt_pcap_file);
-    file->ip_len = ip_len;
-    
-    file->p_f_h.magic = PCAP_FILE_ID;
-    file->p_f_h.version_major = PCAP_VERSION_MAJOR;
-    file->p_f_h.version_minor = PCAP_VERSION_MINOR;
-    file->p_f_h.thiszone = GREENWICH_MEAN_TIME;
-    file->p_f_h.sigfigs = PRECISION_OF_TIME_STAMP;
-    file->p_f_h.snaplen = MAX_LENTH_OF_CAPTURE_PKG;
-    file->p_f_h.linktype = ETHERNET;
+    file.p_f_h.magic = PCAP_FILE_ID;
+    file.p_f_h.version_major = PCAP_VERSION_MAJOR;
+    file.p_f_h.version_minor = PCAP_VERSION_MINOR;
+    file.p_f_h.thiszone = GREENWICH_MEAN_TIME;
+    file.p_f_h.sigfigs = PRECISION_OF_TIME_STAMP;
+    file.p_f_h.snaplen = MAX_LENTH_OF_CAPTURE_PKG;
+    file.p_f_h.linktype = ETHERNET;
 
-    file->p_pktdr.ts.tv_sec = msg.sec;      //  os_tick
-    file->p_pktdr.ts.tv_msec = msg.msec;    //  os_tick
-    file->p_pktdr.caplen = ip_len;          //  ip len
-    file->p_pktdr.len = ip_len;             //
+    file.p_pktdr.ts.tv_sec = msg.sec;      //  os_tick
+    file.p_pktdr.ts.tv_msec = msg.msec;    //  os_tick
+    file.p_pktdr.caplen = ip_len;          //  ip len
+    file.p_pktdr.len = ip_len;             //
 
-    ip_mess = p->payload;
-    while (p) 
-    {
-        rt_memcpy(file->ip_mess, ip_mess, p->len);
-        ip_mess += p->len;
-        p = p->next;
-    }
-    pbuf_free(pbuf);
+//    ip_mess = p->payload;
+//    while (p) 
+//    {
+//        rt_memcpy(file->ip_mess, ip_mess, p->len);
+//        ip_mess += p->len;
+//        p = p->next;
+//    }
+//    pbuf_free(pbuf);
 
-    return file;
+//    return file;
 }
 
 static rt_err_t rt_tcpdump_pcap_file_del(struct rt_pcap_file *file)

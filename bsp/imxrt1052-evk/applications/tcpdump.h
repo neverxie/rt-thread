@@ -79,8 +79,8 @@ struct rt_pcap_file
 {
     struct rt_pcap_file_header   p_f_h;
     struct rt_pcap_pkthdr        p_pktdr;
-    void *ip_mess;
-    rt_size_t ip_len;
+//    void *ip_mess;
+//    rt_size_t ip_len;
 };
 
 struct tcpdump_msg 
