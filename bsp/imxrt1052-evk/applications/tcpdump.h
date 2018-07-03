@@ -39,6 +39,9 @@
 #define MAX_LENTH_OF_CAPTURE_PKG    (0xFFFF)
 #define ETHERNET                    (1)
 
+#define PCAP_FILE_HEADER_SIZE       (24)
+#define PCAP_PKTHDR_SIZE            (16)    
+
 union rt_u32_data
 {
     rt_uint32_t u32byte;
@@ -75,13 +78,13 @@ struct rt_pcap_pkthdr
     rt_uint32_t len;
 };    
 
-struct rt_pcap_file
-{
-    struct rt_pcap_file_header   p_f_h;
-    struct rt_pcap_pkthdr        p_pktdr;
-//    void *ip_mess;
-//    rt_size_t ip_len;
-};
+//struct rt_pcap_file
+//{
+//    struct rt_pcap_file_header   p_f_h;
+//    struct rt_pcap_pkthdr        p_pktdr;
+////    void *ip_mess;
+////    rt_size_t ip_len;
+//};
 
 struct tcpdump_msg 
 {

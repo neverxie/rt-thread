@@ -784,46 +784,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>dstr</GroupName>
-          <Files>
-            <File>
-              <FileName>dstr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>packages\dstr-v0.1.0\src\dstr.c</FilePath>
-            </File>
-            <File>
-              <FileName>examples_dstr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>packages\dstr-v0.1.0\examples\examples_dstr.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>jsmn</GroupName>
-          <Files>
-            <File>
-              <FileName>jsmn.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>packages\jsmn-latest\src\jsmn.c</FilePath>
-            </File>
-            <File>
-              <FileName>example_jsmn.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>packages\jsmn-latest\examples\example_jsmn.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>NetUtils</GroupName>
-          <Files>
-            <File>
-              <FileName>ping.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>packages\netutils-latest\ping\ping.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>Kernel</GroupName>
           <Files>
             <File>

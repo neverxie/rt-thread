@@ -33,6 +33,7 @@ static struct rt_messagequeue *mq;
 static netif_linkoutput_fn link_output;
 static char *filename;
 static rt_uint32_t tcpdump_flag;
+static int fd;
 
 #define TCPDUMP_WRITE_FLAG (0x1 << 2)
 #define TCPDUMP_DEFAULT_NAME    ("tcpdump_file.pcap")
@@ -98,76 +99,82 @@ static void rt_tcpdump_file_dump(struct rt_pcap_file *file)
 }
 #endif
 
-void rt_tcpdump_pcap_file_create(struct pbuf *p)
+void rt_tcpdump_pcap_file_save(struct pbuf *p)
 {
     struct pbuf *pbuf = p;
     struct tcpdump_msg msg;    
-    struct rt_pcap_file file;
+    struct rt_pcap_pkthdr pkthdr;
     rt_uint8_t ip_len = p->tot_len;
+    rt_uint8_t *ip_mess = p->payload;
     
-    file.p_f_h.magic = PCAP_FILE_ID;
-    file.p_f_h.version_major = PCAP_VERSION_MAJOR;
-    file.p_f_h.version_minor = PCAP_VERSION_MINOR;
-    file.p_f_h.thiszone = GREENWICH_MEAN_TIME;
-    file.p_f_h.sigfigs = PRECISION_OF_TIME_STAMP;
-    file.p_f_h.snaplen = MAX_LENTH_OF_CAPTURE_PKG;
-    file.p_f_h.linktype = ETHERNET;
+    if (p != RT_NULL)
+    {   
+        pkthdr.ts.tv_sec = msg.sec;      //  os_tick
+        pkthdr.ts.tv_msec = msg.msec;    //  os_tick
+        pkthdr.caplen = ip_len;          //  ip len
+        pkthdr.len = ip_len;             //
 
-    file.p_pktdr.ts.tv_sec = msg.sec;      //  os_tick
-    file.p_pktdr.ts.tv_msec = msg.msec;    //  os_tick
-    file.p_pktdr.caplen = ip_len;          //  ip len
-    file.p_pktdr.len = ip_len;             //
-
-//    ip_mess = p->payload;
-//    while (p) 
-//    {
-//        rt_memcpy(file->ip_mess, ip_mess, p->len);
-//        ip_mess += p->len;
-//        p = p->next;
-//    }
-//    pbuf_free(pbuf);
-
-//    return file;
-}
-
-static rt_err_t rt_tcpdump_pcap_file_del(struct rt_pcap_file *file)
-{
-    if (file == RT_NULL)
-        return -RT_ERROR;
-    rt_free(file);
-    return RT_EOK;
-}
-
-static rt_err_t rt_tcpdump_pcap_file_write(struct rt_pcap_file *file, rt_size_t len)
-{
-    int fd, length;
-
-    if (filename == RT_NULL) 
-    {
-        rt_kprintf("file name failed\n");
-        return -RT_ERROR;
+        write(fd, &pkthdr, PCAP_PKTHDR_SIZE);
+    
+        while (p) 
+        {   
+            write(fd, ip_mess, p->len);
+            ip_mess += p->len;
+            p = p->next;
+        }
+        pbuf_free(pbuf);  //    where?
     }
-
-    /* write and append */
-    fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0);
-    if (fd < 0) 
+    else
     {
-        rt_kprintf("open file for write failed\n");
+        rt_kprintf("recieve ip mess failed\n");
+        close(fd);
+    }
+}
+
+//static void rt_tcpdump_pcap_file_close(int fd)
+//{
+//    close(fd);
+//    rt_kprintf("tcpdump file write done!\n");
+//}
+
+static int rt_tcpdump_pcap_file_init(int fd)
+{
+    int fe,length;
+    struct rt_pcap_file_header file_header;
+    
+    rt_kprintf("333333333333333333333\n");
+    
+//    if (filename == RT_NULL) 
+//    {
+//        rt_kprintf("filename failed\n");
+//        return -RT_ERROR;
+//    }
+
+    /* write and creat */
+    fe = open("mm.pcap", O_WRONLY | O_CREAT | O_APPEND, 0);
+    rt_kprintf("fe: %d\n", fe);
+    if (fe < 0) 
+    {
+        rt_kprintf("tcpdump file for write failed\n");
         return -RT_ERROR;
     }
 
     /* write pcap file */
-    length = write(fd, file, len);
-    if (length != len)
+    file_header.magic = PCAP_FILE_ID;
+    file_header.version_major = PCAP_VERSION_MAJOR;
+    file_header.version_minor = PCAP_VERSION_MINOR;
+    file_header.thiszone = GREENWICH_MEAN_TIME;
+    file_header.sigfigs = PRECISION_OF_TIME_STAMP;
+    file_header.snaplen = MAX_LENTH_OF_CAPTURE_PKG;
+    file_header.linktype = ETHERNET;
+    length = write(fd, &file_header, PCAP_FILE_HEADER_SIZE);
+    if (length != PCAP_FILE_HEADER_SIZE)
     {
         rt_kprintf("write data failed\n");
-        close(fd);
+        close(fe);
         return -RT_ERROR;
     }
-    close(fd);
-
-    rt_kprintf("tcpdump file write done.\n");
-    return RT_EOK;
+    return fe;
 }
 
 static struct pbuf *rt_tcpdump_ip_mess_recv(void)
@@ -181,9 +188,7 @@ static struct pbuf *rt_tcpdump_ip_mess_recv(void)
         return p;
     } 
     else 
-    {
         return RT_NULL;
-    }
 }
 
 static err_t _netif_linkoutput(struct netif *netif, struct pbuf *p)
@@ -208,6 +213,7 @@ static err_t _netif_linkoutput(struct netif *netif, struct pbuf *p)
     return link_output(netif, p);
 }
 
+#if 0
 static void rt_struct_to_u8(struct rt_pcap_file *file, rt_uint8_t *buf)
 {
     union rt_u32_data u32_data;
@@ -263,31 +269,22 @@ static void rt_struct_to_u8(struct rt_pcap_file *file, rt_uint8_t *buf)
         j += 4;
     }
 }
+#endif
 
 static void rt_tcp_dump_thread(void *param)
 {
-    struct rt_pcap_file *file = RT_NULL;
     struct pbuf *p = RT_NULL;
 
     while (1) 
     {
         p = rt_tcpdump_ip_mess_recv();
 
-        file = rt_tcpdump_pcap_file_create(p);
-
-        if ((tcpdump_flag & TCPDUMP_WRITE_FLAG) && (file != RT_NULL))
-        {
-            if (rt_tcpdump_pcap_file_write(file, TCPDUMP_FILE_SIZE(file)) != RT_EOK)
-            {
-                rt_kprintf("tcp dump write file fail\nstop write file\n");
-                tcpdump_flag &= ~TCPDUMP_WRITE_FLAG;
-            }
-        }
+        rt_tcpdump_pcap_file_save(p);
+        
         
 #ifdef TCPDUMP_DEBUG
         rt_tcpdump_file_dump(file);
 #endif
-        rt_tcpdump_pcap_file_del(file);
     }
 }
 
@@ -300,7 +297,7 @@ static void rt_tcp_dump_thread(void *param)
  */
 void rt_tcpdump_write_enable(void)
 {
-    tcpdump_flag |= TCPDUMP_WRITE_FLAG;
+//    tcpdump_flag |= TCPDUMP_WRITE_FLAG;
 }
 
 /**
@@ -312,7 +309,7 @@ void rt_tcpdump_write_enable(void)
  */
 void rt_tcpdump_write_disable(void)
 {
-    tcpdump_flag &= ~TCPDUMP_WRITE_FLAG;
+//    tcpdump_flag &= ~TCPDUMP_WRITE_FLAG;
 }
 
 /**
@@ -363,7 +360,9 @@ int rt_tcp_dump_init(void)
         rt_mq_delete(mq);
         return -RT_ERROR;
     }
-    rt_tcpdump_set_filename("test1.pcap");
+//    rt_tcpdump_set_filename("test1.pcap");
+    rt_tcpdump_pcap_file_init(fd);
+    
     level = rt_hw_interrupt_disable();
     netif = dev->netif;
     link_output = netif->linkoutput;    //   save
