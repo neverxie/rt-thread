@@ -417,3 +417,5 @@ rt_err_t rt_tcp_dump_init(void)
     rt_thread_startup(tid);
     return RT_EOK;
 }
+INIT_APP_EXPORT(rt_tcp_dump_init);
+

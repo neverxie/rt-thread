@@ -200,8 +200,6 @@ void main_thread_entry(void *parameter)
 #endif
 }
 
-extern void rt_tcp_dump_thread(void *param);
-rt_mailbox_t tcpdump_mb;
 void rt_application_init(void)
 {
     rt_thread_t tid;    
