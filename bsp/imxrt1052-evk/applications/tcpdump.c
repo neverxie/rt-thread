@@ -33,6 +33,8 @@ static struct netif *netif;
 static rt_mailbox_t mb;
 static netif_linkoutput_fn link_output;
 
+//static netif_input_fn input;
+
 #if 1
 rt_uint8_t ip[74] =
 {
@@ -246,8 +248,20 @@ static err_t _netif_linkoutput(struct netif *netif, struct pbuf *p)
         pbuf_free(p);
     }
 
-    link_output(netif, p);
+    return link_output(netif, p);
 }
+
+//static err_t _netif_input(struct pbuf *p, struct netif *inp)
+//{
+//    pbuf_ref(p);
+
+//    if (rt_mb_send(mb, (rt_uint32_t)p) != RT_EOK)
+//    {
+//        pbuf_free(p);
+//    }
+
+//    return input(p, inp);
+//}
 
 /**
  * This function will print PCAP-formatted file in serial terminal.
@@ -414,6 +428,9 @@ rt_err_t rt_tcp_dump_init(void)
     link_output = netif->linkoutput;    //   save
     netif->linkoutput = _netif_linkoutput;
 
+//    input = netif->input;
+//    netif->input = _netif_input;
+    
     rt_thread_startup(tid);
     return RT_EOK;
 }
