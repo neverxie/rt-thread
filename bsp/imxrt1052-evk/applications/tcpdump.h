@@ -20,78 +20,51 @@
  *
  * Change Logs:
  * Date           Author       Notes
- * 2018-07-03     never        the first version
+ * 2018-06-21     never        the first version
  */
 #ifndef __TCPDUMP_H_
 #define __TCPDUMP_H_
 /* header file content */
 
 #include <rtdef.h>
-#include <ethernetif.h>
-
-#define TCPDUMP_MAX_MSG      (10)
-
-#define PCAP_FILE_ID                (0xA1B2C3D4)
-#define PCAP_VERSION_MAJOR          (0x200)
-#define PCAP_VERSION_MINOR          (0x400)
-#define GREENWICH_MEAN_TIME         (0)  
-#define PRECISION_OF_TIME_STAMP     (0)
-#define MAX_LENTH_OF_CAPTURE_PKG    (0xFFFF)
-#define ETHERNET                    (1)
-
-#define PCAP_FILE_HEADER_SIZE       (24)
-#define PCAP_PKTHDR_SIZE            (16)    
-
-
-union rt_u32_data
-{
-    rt_uint32_t u32byte;
-    rt_uint8_t  a[4];
-};
-
-union rt_u16_data
-{
-    rt_uint16_t u16byte;
-    rt_uint8_t  a[2];
-};
+#include "netif/ethernetif.h"
 
 struct rt_pcap_file_header
 {
-    rt_uint32_t magic;        
-    rt_uint16_t version_major;  
-    rt_uint16_t version_minor;  
-    rt_int32_t  thiszone;     
-    rt_uint32_t sigfigs;      
-    rt_uint32_t snaplen;       
-    rt_uint32_t linktype;    
+    rt_uint32_t magic;           // 0xa1b2c3d4
+    rt_uint16_t version_major;   // 0x0200
+    rt_uint16_t version_minor;   // 0x0400
+    rt_int32_t thiszone;         // 0
+    rt_uint32_t sigfigs;         //
+    rt_uint32_t snaplen;         //
+    rt_uint32_t linktype;        // 1
 };
 
 struct rt_timeval
 {
-    rt_uint32_t tv_sec;
-    rt_uint32_t tv_msec;
+    rt_uint32_t tv_sec;          //    os_tick
+    rt_uint32_t tv_msec;         //    os_tick
 };
 
-struct rt_pcap_pkthdr
+struct rt_pcap_header
 {
     struct rt_timeval ts;
     rt_uint32_t caplen;
     rt_uint32_t len;
 };    
 
-//struct rt_pcap_file
-//{
-//    struct rt_pcap_file_header   p_f_h;
-//    struct rt_pcap_pkthdr        p_pktdr;
-////    void *ip_mess;
-////    rt_size_t ip_len;
-//};
-
-struct tcpdump_msg 
+struct rt_pcap_file
 {
-    void *pbuf;
-    rt_uint32_t sec;
-    rt_uint32_t msec;
+    struct rt_pcap_file_header   p_f_h;
+    struct rt_pcap_header        p_h;
+    void *ip_mess;
+    size_t ip_len;
 };
+typedef struct rt_pcap_file rt_pcap_file_t;
+
+int rt_tcpdump_init(void);
+void rt_tcpdump_deinit(void);
+void rt_tcpdump_write_enable(void);
+void rt_tcpdump_write_disable(void);
 
 #endif /* __FILE_H__ */
