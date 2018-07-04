@@ -280,7 +280,7 @@ static err_t _netif_linkoutput(struct netif *netif, struct pbuf *p)
         msg.pbuf = p;
         msg.sec  = tick / 1000;
         msg.msec = tick % 1000;
-//        rt_kprintf("tx p: %p\n", p);
+        rt_kprintf("tx p: %p\n", p);
         if (rt_mq_send(mq, &msg, sizeof(msg)) != RT_EOK) 
         {
             rt_kprintf("mq send failed\n");
