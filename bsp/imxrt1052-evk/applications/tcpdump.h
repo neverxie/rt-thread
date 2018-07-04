@@ -46,21 +46,21 @@ struct rt_timeval
     rt_uint32_t tv_msec;         //    os_tick
 };
 
-struct rt_pcap_header
+struct rt_pkthdr
 {
     struct rt_timeval ts;
     rt_uint32_t caplen;
     rt_uint32_t len;
 };    
 
-struct rt_pcap_file
-{
-    struct rt_pcap_file_header   p_f_h;
-    struct rt_pcap_header        p_h;
-    void *ip_mess;
-    size_t ip_len;
-};
-typedef struct rt_pcap_file rt_pcap_file_t;
+//struct rt_pcap_file
+//{
+//    struct rt_pcap_file_header   p_f_h;
+//    struct rt_pcap_header        p_h;
+//    void *ip_mess;
+//    size_t ip_len;
+//};
+//typedef struct rt_pcap_file rt_pcap_file_t;
 
 int rt_tcpdump_init(void);
 void rt_tcpdump_deinit(void);
