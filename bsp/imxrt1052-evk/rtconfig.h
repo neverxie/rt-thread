@@ -99,6 +99,11 @@
 
 /* Using USB */
 
+#define RT_USING_USB_DEVICE
+#define RT_USBD_THREAD_STACK_SZ 4096
+#define USB_VENDOR_ID 0x0234
+#define USB_PRODUCT_ID 0x0088
+#define _RT_USB_DEVICE_NONE
 
 /* POSIX layer and C standard library */
 
@@ -163,7 +168,7 @@
 
 #define PKG_USING_JSMN
 #define PKG_USING_JSMN_LATEST_VERSION
-
+#define PKG_USING_RDB
 /* jsmn Options */
 
 #define JSMN_USING_EXAMPLE
@@ -192,6 +197,8 @@
 
 
 /* system packages */
+
+/* RT-Thread GUI Engine */
 
 
 /* peripheral libraries and drivers */
@@ -253,5 +260,6 @@
 #define LCD_RST_PIN 45
 #define RT_USING_SDRAM
 #define RT_USING_RTC_HP
+#define RT_USING_EHCI0_AS_DEVICE
 
 #endif

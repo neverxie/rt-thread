@@ -29,55 +29,10 @@
 #include <rtdef.h>
 #include <ethernetif.h>
 
-#define TCPDUMP_MAX_MSG      (10)
-
-#define PCAP_FILE_ID                (0xA1B2C3D4)
-#define PCAP_VERSION_MAJOR          (0x200)
-#define PCAP_VERSION_MINOR          (0x400)
-#define GREENWICH_MEAN_TIME         (0)  
-#define PRECISION_OF_TIME_STAMP     (0)
-#define MAX_LENTH_OF_CAPTURE_PKG    (0xFFFF)
-#define ETHERNET                    (1)
-
-#define PCAP_FILE_HEADER_SIZE       (24)
-#define PCAP_PKTHDR_SIZE            (16)    
+   
 
 
-union rt_u32_data
-{
-    rt_uint32_t u32byte;
-    rt_uint8_t  a[4];
-};
-
-union rt_u16_data
-{
-    rt_uint16_t u16byte;
-    rt_uint8_t  a[2];
-};
-
-struct rt_pcap_file_header
-{
-    rt_uint32_t magic;        
-    rt_uint16_t version_major;  
-    rt_uint16_t version_minor;  
-    rt_int32_t  thiszone;     
-    rt_uint32_t sigfigs;      
-    rt_uint32_t snaplen;       
-    rt_uint32_t linktype;    
-};
-
-struct rt_timeval
-{
-    rt_uint32_t tv_sec;
-    rt_uint32_t tv_msec;
-};
-
-struct rt_pcap_pkthdr
-{
-    struct rt_timeval ts;
-    rt_uint32_t caplen;
-    rt_uint32_t len;
-};    
+    
 
 //struct rt_pcap_file
 //{
@@ -87,11 +42,6 @@ struct rt_pcap_pkthdr
 ////    rt_size_t ip_len;
 //};
 
-struct tcpdump_msg 
-{
-    void *pbuf;
-    rt_uint32_t sec;
-    rt_uint32_t msec;
-};
+
 
 #endif /* __FILE_H__ */
