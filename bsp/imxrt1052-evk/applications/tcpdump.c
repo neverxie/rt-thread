@@ -34,11 +34,6 @@
 #define TCPDUMP_MAX_MSG      (10)
 #define TCPDUMP_DEFAULT_NAME ("75.pcap")
 
-//#define TCPDUMP_WRITE_FLAG (0x1 << 2)
-
-//#define TCPDUMP_FILE_SIZE(_file) \
-//    (sizeof(struct rt_pcap_file) + _file->ip_len)
-
 struct tcpdump_msg
 {
     void *pbuf;
@@ -46,16 +41,16 @@ struct tcpdump_msg
     rt_uint32_t msec;
 };
 
-#define PACP_FILE_HEADER_CREEATE(_head) \
-do {                                    \
-(_head)->magic = 0xa1b2c3d4;            \
-(_head)->version_major = 0x200;         \
-(_head)->version_minor = 0x400;         \
-(_head)->thiszone = 0;                  \
-(_head)->sigfigs = 0;                   \
-(_head)->snaplen = 0xff;                \
-(_head)->linktype = 1;                  \
-} while (0)
+#define PACP_FILE_HEADER_CREEATE(_head)     \
+    do {                                    \
+    (_head)->magic = 0xa1b2c3d4;            \
+    (_head)->version_major = 0x200;         \
+    (_head)->version_minor = 0x400;         \
+    (_head)->thiszone = 0;                  \
+    (_head)->sigfigs = 0;                   \
+    (_head)->snaplen = 0xff;                \
+    (_head)->linktype = 1;                  \
+    } while (0)
 
 #define PACP_PKTHDR_CREEATE(_head, _msg)                            \
     do {                                                            \
@@ -177,76 +172,6 @@ static err_t _netif_input(struct pbuf *p, struct netif *inp)
     
     return input(p, inp);
 }
-#if 0
-static rt_err_t rt_tcpdump_pcap_file_write(rt_pcap_file_t *file, int len)
-{
-    int fd, length;
-
-    if (filename == RT_NULL)
-    {
-        rt_kprintf("file name is null\n");
-        return -RT_ERROR;
-    }
-    fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0);
-    if (fd < 0)
-    {
-        rt_kprintf("open file for write failed\n");
-        return -RT_ERROR;
-    }
-
-    length = write(fd, file, len);
-    if (length != len)
-    {
-        rt_kprintf("write data failed\n");
-        close(fd);
-        return -RT_ERROR;
-    }
-    close(fd);
-    rt_kprintf("read/write done.\n");
-    return RT_EOK;
-}
-
-static void rt_tcpdump_pcap_file_delete(rt_pcap_file_t *file)
-{
-    rt_free(file);
-}
-
-static rt_pcap_file_t *rt_tcpdump_pcap_file_create(struct pbuf *p)
-{
-    rt_pcap_file_t *file = RT_NULL;
-    rt_uint8_t *ip_mess = RT_NULL;
-    int p_len = p->tot_len;
-
-    file = rt_malloc(sizeof(struct rt_pcap_file) + p_len);
-    if (file == RT_NULL)
-        return RT_NULL;
-    file->ip_mess = (rt_uint8_t *)file + sizeof(struct rt_pcap_file);
-
-    file->p_f_h.magic = 0xa1b2c3d4;
-    file->p_f_h.version_major = 0x200;
-    file->p_f_h.version_minor = 0x400;
-    file->p_f_h.thiszone = 0;
-    file->p_f_h.sigfigs = 0;
-    file->p_f_h.snaplen = 0xff;
-    file->p_f_h.linktype = 1;
-
-    file->p_h.ts.tv_sec = 0;   //  os_tick
-    file->p_h.ts.tv_msec = 0;  //  os_tick
-    file->p_h.caplen = p_len;   //  ip len
-    file->p_h.len = p_len;      //
-
-    ip_mess = (rt_uint8_t *)(file->ip_mess);
-    while (p)
-    {
-        rt_memcpy(ip_mess, p->payload, p->len);
-        ip_mess += p->len;
-        p = p->next;
-    }
-    file->ip_len = p_len;
-
-    return file;
-}
-#endif
 
 static rt_err_t rt_tcpdump_pcap_file_write(void *buf, int len)
 {
@@ -258,16 +183,9 @@ static rt_err_t rt_tcpdump_pcap_file_write(void *buf, int len)
         rt_kprintf("file name is null\n");
         return -RT_ERROR;
     }
-//    int i;
-//    for (i=0; i<len; i++)
-//    {
-//        rt_kprintf("%02x ", *((rt_uint8_t *)buf + i));
-//    }
     
-    //  first
     if (fd < 0)
     {
-//        rt_kprintf("open once!!!!!!!!!!\n");
         fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0);
         if (fd < 0)
         {
@@ -285,14 +203,14 @@ static rt_err_t rt_tcpdump_pcap_file_write(void *buf, int len)
     }
     count += length;
     
-    if (count > 1000)
+    if (count > 1024)
     {
         count = 0;
-        rt_kprintf("auto save\n");
+        rt_kprintf("tcpdump file write done and auto save!\n");
         close(fd);
+        rt_kprintf("after close, fd: %d\n", fd);
     }    
-//    close(fd);
-    rt_kprintf("read/write done.\n");
+    
     return RT_EOK;
 }
 
@@ -354,102 +272,6 @@ static void rt_pkthdr_to_u8(struct rt_pkthdr *pkthdr, rt_uint8_t *buf)
         j += 4;
     }
 }
-#if 0
-void rt_printf_pcap_file(rt_pcap_file_t *file)
-{
-    rt_u32_data_t u32_data;
-    rt_u16_data_t u16_data;
-    int k, i, j;
-    rt_uint8_t *ptr = file->ip_mess;
-    rt_pcap_file_header_t *p_p_f_h = (rt_pcap_file_header_t *)file;
-    rt_uint32_t *p32_p_f_h = (rt_uint32_t *)p_p_f_h + 2;
-
-    rt_pcap_header_t *p32_p_h = (rt_pcap_header_t *)(p_p_f_h + 1);
-    rt_uint32_t *p32 = (rt_uint32_t *)p32_p_h;
-
-    rt_uint16_t *p16 = (rt_uint16_t *)p_p_f_h + 2;
-
-    /* struct rt_pcap_file_header. magic */
-    u32_data.u32byte = 0;
-    u32_data.u32byte = file->p_f_h.magic;
-    for (k = 3; k != -1; k--)
-        rt_kprintf("%02x ", u32_data.a[k]);
-
-    /* struct rt_pcap_file_header. version_major & version_minor*/
-    for (i = 0, j = 0; i < 2; i++)
-    {
-        u16_data.u16byte = 0;
-        u16_data.u16byte = *(p16 + i);
-        for (k = 1; k != -1; k--)
-        {
-            rt_kprintf("%02x ", u16_data.a[k]);
-            j++;
-        }
-        if (j % 4 == 0)
-        {
-            rt_kprintf("  ");
-        }
-    }
-
-    /* struct rt_pcap_header.thiszone ~ linktype */
-    for (i = 0, j = 0; i < 4; i++)
-    {
-        u32_data.u32byte = 0;
-        u32_data.u32byte = *(p32_p_f_h + i);
-        for (k = 3; k != -1; k--)
-        {
-
-            rt_kprintf("%02x ", u32_data.a[k]);
-            j++;
-        }
-        if (j == 8)
-        {
-            rt_kprintf("\r\n");
-        }
-        if (j == 16)
-        {
-            rt_kprintf("  ");
-        }
-    }
-    /* struct rt_pcap_header */
-    for (i = 0, j = 0; i < 4; i++)
-    {
-        u32_data.u32byte = 0;
-        u32_data.u32byte = *(p32 + i);
-        for (k = 3; k != -1; k--)
-        {
-
-            rt_kprintf("%02x ", u32_data.a[k]);
-            j++;
-        }
-        if (j == 8)
-        {
-            rt_kprintf("\r\n");
-        }
-        if (j == 16)
-        {
-            rt_kprintf("  ");
-        }
-    }
-
-    for (i = 0, j = 0; i < file->ip_len; i++)
-    {
-        if ((j % 8) == 0)
-        {
-            rt_kprintf("  ");
-        }
-        if ((j % 16) == 0)
-        {
-            rt_kprintf("\r\n");
-        }
-        rt_kprintf("%02x ", *ptr);
-
-        j++;
-        ptr++;
-    }
-    rt_kprintf("\n\n");
-}
-#endif
 
 static void rt_tcpdump_pcap_file_init(void)
 {
@@ -457,6 +279,7 @@ static void rt_tcpdump_pcap_file_init(void)
     rt_uint8_t buf[24] = {0};
     
     PACP_FILE_HEADER_CREEATE(&file_header);
+
 //    rt_header_to_u8(&file_header, buf);
 //    dump_hex(buf, 24);
 

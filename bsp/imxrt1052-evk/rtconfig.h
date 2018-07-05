@@ -99,6 +99,11 @@
 
 /* Using USB */
 
+#define RT_USING_USB_DEVICE
+#define RT_USBD_THREAD_STACK_SZ 4096
+#define USB_VENDOR_ID 0x0F88
+#define USB_PRODUCT_ID 0x0099
+#define _RT_USB_DEVICE_NONE
 
 /* POSIX layer and C standard library */
 
@@ -112,9 +117,6 @@
 #define RT_USING_LWIP202
 #define RT_LWIP_ICMP
 #define RT_LWIP_DNS
-#define RT_LWIP_DHCP
-#define IP_SOF_BROADCAST 1
-#define IP_SOF_BROADCAST_RECV 1
 
 /* Static IPv4 Address */
 
@@ -193,8 +195,6 @@
 
 /* system packages */
 
-/* RT-Thread GUI Engine */
-
 
 /* peripheral libraries and drivers */
 
@@ -213,6 +213,14 @@
 
 /* example package: hello */
 
+
+/* Privated Packages of RealThread */
+
+
+/* Network Utilities */
+
+#define PKG_USING_RDB
+#define PKG_USING_RDB_LATEST_VERSION
 #define SOC_IMXRT1052
 #define BOARD_USING_QSPIFLASH
 #define BOARD_RT1050_FIRE
@@ -255,5 +263,6 @@
 #define LCD_RST_PIN 45
 #define RT_USING_SDRAM
 #define RT_USING_RTC_HP
+#define RT_USING_EHCI0_AS_DEVICE
 
 #endif
