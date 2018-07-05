@@ -29,6 +29,18 @@
 #include <rtdef.h>
 #include "netif/ethernetif.h"
 
+union rt_u32_data
+{
+    rt_uint32_t u32byte;
+    rt_uint8_t a[4];
+};
+
+union rt_u16_data
+{
+    rt_uint16_t u16byte;
+    rt_uint8_t a[2];
+};
+
 struct rt_pcap_file_header
 {
     rt_uint32_t magic;           // 0xa1b2c3d4
