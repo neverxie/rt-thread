@@ -20,63 +20,13 @@
  *
  * Change Logs:
  * Date           Author       Notes
- * 2018-06-21     never        the first version
+ * 2018-07-05     never        the first version
  */
 #ifndef __TCPDUMP_H_
 #define __TCPDUMP_H_
 /* header file content */
 
-#include <rtdef.h>
-#include "netif/ethernetif.h"
-
-union rt_u32_data
-{
-    rt_uint32_t u32byte;
-    rt_uint8_t a[4];
-};
-
-union rt_u16_data
-{
-    rt_uint16_t u16byte;
-    rt_uint8_t a[2];
-};
-
-struct rt_pcap_file_header
-{
-    rt_uint32_t magic;           // 0xa1b2c3d4
-    rt_uint16_t version_major;   // 0x0200
-    rt_uint16_t version_minor;   // 0x0400
-    rt_int32_t thiszone;         // 0
-    rt_uint32_t sigfigs;         //
-    rt_uint32_t snaplen;         //
-    rt_uint32_t linktype;        // 1
-};
-
-struct rt_timeval
-{
-    rt_uint32_t tv_sec;          //    os_tick
-    rt_uint32_t tv_msec;         //    os_tick
-};
-
-struct rt_pkthdr
-{
-    struct rt_timeval ts;
-    rt_uint32_t caplen;
-    rt_uint32_t len;
-};    
-
-//struct rt_pcap_file
-//{
-//    struct rt_pcap_file_header   p_f_h;
-//    struct rt_pcap_header        p_h;
-//    void *ip_mess;
-//    size_t ip_len;
-//};
-//typedef struct rt_pcap_file rt_pcap_file_t;
-
 int rt_tcpdump_init(void);
 void rt_tcpdump_deinit(void);
-void rt_tcpdump_write_enable(void);
-void rt_tcpdump_write_disable(void);
 
 #endif /* __FILE_H__ */

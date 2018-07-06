@@ -150,11 +150,18 @@ static void BOARD_ConfigMPU(void)
  */
 void SysTick_Handler(void)
 {
+//    static int count = 0;
     /* enter interrupt */
     rt_interrupt_enter();
 
     rt_tick_increase();
-
+//    count++;
+//    if (count == RT_TICK_PER_SECOND)
+//    {
+//        rt_kprintf("1\n");
+//        count = 0;
+//    }
+    
     /* leave interrupt */
     rt_interrupt_leave();
 }

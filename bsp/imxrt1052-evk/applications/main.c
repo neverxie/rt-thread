@@ -25,6 +25,7 @@
 #include <stdint.h>
 #include <rthw.h>
 #include <rtthread.h>
+#include "tcpdump.h"
 
 #ifdef RT_USING_DFS
 #include <dfs_file.h>
@@ -121,7 +122,6 @@ int main(void)
     //dump_clock();
     dump_cc_info();
     dump_link_info();
-
     rt_kprintf("build time: %s %s\n", __DATE__, __TIME__);
     
 #if defined(RT_USING_DFS) && defined(RT_USING_SDIO)
@@ -139,7 +139,7 @@ int main(void)
         rt_kprintf("sdcard init fail or timeout: %d!\n", result);
     }
 #endif
-
+    
     while (1)
     {
         rt_thread_delay(RT_TICK_PER_SECOND);

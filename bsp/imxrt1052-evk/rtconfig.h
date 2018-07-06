@@ -265,4 +265,7 @@
 #define RT_USING_RTC_HP
 #define RT_USING_EHCI0_AS_DEVICE
 
+//#define RT_DEBUG_IPC  1
+//#define RT_DEBUG_LOG    (3, ("2\n"))
+
 #endif
