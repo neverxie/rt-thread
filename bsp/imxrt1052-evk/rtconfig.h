@@ -195,6 +195,15 @@
 
 /* system packages */
 
+#define PKG_USING_GUIENGINE
+#define PKG_USING_GUIENGINE_LATEST_VERSION
+#define GUIENGINE_NAME_MAX 16
+#define GUIENGINE_USING_FONT16
+#define GUIENGINE_USING_FONT12
+#define GUIENGINE_USING_PNG
+#define GUIENGINE_IMAGE_LODEPNG
+#define GUIENGINE_IMAGE_CONTAINER
+#define GUIENGINE_USING_DEMO
 
 /* peripheral libraries and drivers */
 
@@ -264,8 +273,5 @@
 #define RT_USING_SDRAM
 #define RT_USING_RTC_HP
 #define RT_USING_EHCI0_AS_DEVICE
-
-//#define RT_DEBUG_IPC  1
-//#define RT_DEBUG_LOG    (3, ("2\n"))
 
 #endif
