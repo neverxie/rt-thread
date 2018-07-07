@@ -40,7 +40,7 @@
 
 /* debug option */
 //#define ETH_RX_DUMP
-//#define ETH_TX_DUMP
+#define ETH_TX_DUMP
 
 //#define DBG_ENABLE
 #define DBG_SECTION_NAME    "[ETH]"
