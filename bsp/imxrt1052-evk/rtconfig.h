@@ -192,6 +192,9 @@
 
 /* tools packages */
 
+#define PKG_USING_OPTPARSE
+#define PKG_USING_OPTPARSE_V100
+#define OPTPARSE_USING_DEMO
 
 /* system packages */
 
