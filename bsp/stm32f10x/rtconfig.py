@@ -51,7 +51,8 @@ if PLATFORM == 'gcc':
     OBJCPY = PREFIX + 'objcopy'
 
     DEVICE = ' -mcpu=cortex-m3 -mthumb -ffunction-sections -fdata-sections'
-    CFLAGS = DEVICE
+#    CFLAGS = DEVICE
+    CFLAGS = DEVICE + ' -save-temps=obj'
     AFLAGS = ' -c' + DEVICE + ' -x assembler-with-cpp'
     LFLAGS = DEVICE + ' -Wl,--gc-sections,-Map=rtthread-stm32.map,-cref,-u,Reset_Handler -T stm32_rom.ld'
 
