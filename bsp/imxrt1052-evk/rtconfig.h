@@ -90,12 +90,18 @@
 /* Device Drivers */
 
 #define RT_USING_DEVICE_IPC
+#define RT_PIPE_BUFSZ 512
 #define RT_USING_SERIAL
 #define RT_USING_I2C
 #define RT_USING_I2C_BITOPS
 #define RT_USING_PIN
 #define RT_USING_RTC
 #define RT_USING_SDIO
+#define RT_SDIO_STACK_SIZE 512
+#define RT_SDIO_THREAD_PRIORITY 15
+#define RT_MMCSD_STACK_SIZE 1024
+#define RT_MMCSD_THREAD_PREORITY 22
+#define RT_MMCSD_MAX_PARTITION 16
 #define RT_USING_SPI
 
 /* Using USB */
@@ -184,14 +190,18 @@
 
 /* system packages */
 
-/* RT-Thread GUI Engine */
-
 
 /* peripheral libraries and drivers */
 
 
 /* miscellaneous packages */
 
+#define PKG_USING_DSTR
+#define PKG_USING_DSTR_V010
+
+/* dstr Options */
+
+#define DSTR_USING_EXAMPLE
 
 /* sample package */
 
@@ -205,8 +215,8 @@
 /* Network Utilities */
 
 #define SOC_IMXRT1052
-#define BOARD_USING_HYPERFLASH
-#define BOARD_RT1050_EVK
+#define BOARD_USING_QSPIFLASH
+#define BOARD_RT1050_FIRE
 
 /* RT1050 Bsp Config */
 
@@ -231,7 +241,7 @@
 
 /* Select lcd driver */
 
-/* Notice: Evk Board para: 480*272 4 4 8 2 40 10 106 45 */
+/* Notice: Fire Board para: 800*480 4 4 8 2 40 10 58 45 */
 
 #define RT_USING_LCD
 #define LCD_WIDTH 480

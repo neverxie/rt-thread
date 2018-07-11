@@ -163,13 +163,13 @@
         <option>
           <name>CCDefines</name>
           <state />
-          <state>FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE</state>
           <state>CPU_MIMXRT1052DVL6B</state>
           <state>SKIP_SYSCLK_INIT</state>
           <state>EVK_MCIMXRM</state>
           <state>FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1</state>
           <state>RT_USING_DLIBC</state>
           <state>_DLIB_FILE_DESCRIPTOR</state>
+          <state>_DLIB_THREAD_SUPPORT</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -311,7 +311,6 @@
           <state>$PROJ_DIR$\drivers</state>
           <state>$PROJ_DIR$\..\..\components\net\lwip-2.0.2\src\include\ipv4</state>
           <state>$PROJ_DIR$\.</state>
-          <state>$PROJ_DIR$\xip</state>
           <state>$PROJ_DIR$\..\..\libcpu\arm\cortex-m7</state>
           <state>$PROJ_DIR$\..\..\components\dfs\include</state>
           <state>$PROJ_DIR$\..\..\components\dfs\filesystems\devfs</state>
@@ -319,6 +318,7 @@
           <state>$PROJ_DIR$\Libraries\utilities</state>
           <state>$PROJ_DIR$\..\..\components\drivers\spi</state>
           <state>$PROJ_DIR$\applications</state>
+          <state>$PROJ_DIR$\packages\dstr-v0.1.0\inc</state>
           <state>$PROJ_DIR$\..\..\components\finsh</state>
           <state>$PROJ_DIR$\..\..\components\dfs\filesystems\elmfat</state>
           <state>$PROJ_DIR$\..\..\components\net\lwip-2.0.2\src\include\posix</state>
@@ -1104,13 +1104,13 @@
         <option>
           <name>CCDefines</name>
           <state>NDEBUG</state>
-          <state>FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE</state>
           <state>CPU_MIMXRT1052DVL6B</state>
           <state>SKIP_SYSCLK_INIT</state>
           <state>EVK_MCIMXRM</state>
           <state>FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1</state>
           <state>RT_USING_DLIBC</state>
           <state>_DLIB_FILE_DESCRIPTOR</state>
+          <state>_DLIB_THREAD_SUPPORT</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -1252,7 +1252,6 @@
           <state>$PROJ_DIR$\drivers</state>
           <state>$PROJ_DIR$\..\..\components\net\lwip-2.0.2\src\include\ipv4</state>
           <state>$PROJ_DIR$\.</state>
-          <state>$PROJ_DIR$\xip</state>
           <state>$PROJ_DIR$\..\..\libcpu\arm\cortex-m7</state>
           <state>$PROJ_DIR$\..\..\components\dfs\include</state>
           <state>$PROJ_DIR$\..\..\components\dfs\filesystems\devfs</state>
@@ -1260,6 +1259,7 @@
           <state>$PROJ_DIR$\Libraries\utilities</state>
           <state>$PROJ_DIR$\..\..\components\drivers\spi</state>
           <state>$PROJ_DIR$\applications</state>
+          <state>$PROJ_DIR$\packages\dstr-v0.1.0\inc</state>
           <state>$PROJ_DIR$\..\..\components\finsh</state>
           <state>$PROJ_DIR$\..\..\components\dfs\filesystems\elmfat</state>
           <state>$PROJ_DIR$\..\..\components\net\lwip-2.0.2\src\include\posix</state>
@@ -1884,6 +1884,9 @@
       <name>$PROJ_DIR$\applications\device_test.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\applications\lcd_init.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\applications\main.c</name>
     </file>
     <file>
@@ -1926,10 +1929,10 @@
       <name>$PROJ_DIR$\drivers\drv_sdio.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\drivers\drv_eth.c</name>
+      <name>$PROJ_DIR$\drivers\drv_eth_fire.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\drivers\fsl_phy.c</name>
+      <name>$PROJ_DIR$\drivers\fsl_phy_fire.c</name>
     </file>
   </group>
   <group>
@@ -2119,12 +2122,12 @@
     </file>
   </group>
   <group>
-    <name>xip</name>
+    <name>dstr</name>
     <file>
-      <name>$PROJ_DIR$\xip\fsl_flexspi_nor_boot.c</name>
+      <name>$PROJ_DIR$\packages\dstr-v0.1.0\src\dstr.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\xip\fsl_flexspi_nor_flash.c</name>
+      <name>$PROJ_DIR$\packages\dstr-v0.1.0\examples\examples_dstr.c</name>
     </file>
   </group>
   <group>
