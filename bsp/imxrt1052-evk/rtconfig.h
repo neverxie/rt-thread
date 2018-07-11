@@ -71,7 +71,7 @@
 #define DFS_USING_WORKDIR
 #define DFS_FILESYSTEMS_MAX 2
 #define DFS_FILESYSTEM_TYPES_MAX 2
-#define DFS_FD_MAX 4
+#define DFS_FD_MAX 8
 #define RT_USING_DFS_ELMFAT
 
 /* elm-chan's FatFs, Generic FAT Filesystem Module */
@@ -85,6 +85,7 @@
 #define RT_DFS_ELM_MAX_SECTOR_SIZE 512
 #define RT_DFS_ELM_REENTRANT
 #define RT_USING_DFS_DEVFS
+#define RT_USING_DFS_NET
 
 /* Device Drivers */
 
@@ -108,6 +109,7 @@
 /* POSIX layer and C standard library */
 
 #define RT_USING_LIBC
+#define RT_USING_POSIX
 
 /* Network stack */
 
@@ -179,6 +181,7 @@
 
 #define PKG_USING_NETUTILS
 #define PKG_NETUTILS_PING
+#define PKG_NETUTILS_TCPDUMP
 #define PKG_USING_NETUTILS_LATEST_VERSION
 
 /* security packages */
@@ -203,15 +206,6 @@
 
 /* system packages */
 
-#define PKG_USING_GUIENGINE
-#define PKG_USING_GUIENGINE_LATEST_VERSION
-#define GUIENGINE_NAME_MAX 16
-#define GUIENGINE_USING_FONT16
-#define GUIENGINE_USING_FONT12
-#define GUIENGINE_USING_PNG
-#define GUIENGINE_IMAGE_LODEPNG
-#define GUIENGINE_IMAGE_CONTAINER
-#define GUIENGINE_USING_DEMO
 
 /* peripheral libraries and drivers */
 
