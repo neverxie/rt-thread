@@ -98,10 +98,13 @@ void rtthread_startup(void)
     /* never reach here */
     return ;
 }
-
+int a;
+char *str = "never";
 int main(void)
 {
-    /* disable interrupt first */
+    int b = a;
+	char *r = str;
+	/* disable interrupt first */
     rt_hw_interrupt_disable();
 
     /* startup RT-Thread RTOS */
