@@ -72,7 +72,7 @@
 #define DFS_USING_WORKDIR
 #define DFS_FILESYSTEMS_MAX 2
 #define DFS_FILESYSTEM_TYPES_MAX 2
-#define DFS_FD_MAX 4
+#define DFS_FD_MAX 8
 #define RT_USING_DFS_ELMFAT
 
 /* elm-chan's FatFs, Generic FAT Filesystem Module */
@@ -90,12 +90,18 @@
 /* Device Drivers */
 
 #define RT_USING_DEVICE_IPC
+#define RT_PIPE_BUFSZ 512
 #define RT_USING_SERIAL
 #define RT_USING_I2C
 #define RT_USING_I2C_BITOPS
 #define RT_USING_PIN
 #define RT_USING_RTC
 #define RT_USING_SDIO
+#define RT_SDIO_STACK_SIZE 512
+#define RT_SDIO_THREAD_PRIORITY 15
+#define RT_MMCSD_STACK_SIZE 1024
+#define RT_MMCSD_THREAD_PREORITY 22
+#define RT_MMCSD_MAX_PARTITION 16
 #define RT_USING_SPI
 
 /* Using USB */
@@ -124,6 +130,7 @@
 #define RT_LWIP_MSKADDR "255.255.255.0"
 #define RT_LWIP_UDP
 #define RT_LWIP_TCP
+#define RT_LWIP_RAW
 #define RT_MEMP_NUM_NETCONN 8
 #define RT_LWIP_PBUF_NUM 16
 #define RT_LWIP_RAW_PCB_NUM 4
@@ -169,6 +176,10 @@
 
 /* Wiced WiFi */
 
+#define PKG_USING_NETUTILS
+#define PKG_NETUTILS_PING
+#define PKG_NETUTILS_TCPDUMP
+#define PKG_USING_NETUTILS_LATEST_VERSION
 
 /* security packages */
 
@@ -181,10 +192,11 @@
 
 /* tools packages */
 
+#define PKG_USING_OPTPARSE
+#define PKG_USING_OPTPARSE_V100
+#define OPTPARSE_USING_DEMO
 
 /* system packages */
-
-/* RT-Thread GUI Engine */
 
 
 /* peripheral libraries and drivers */
@@ -205,8 +217,8 @@
 /* Network Utilities */
 
 #define SOC_IMXRT1052
-#define BOARD_USING_HYPERFLASH
-#define BOARD_RT1050_EVK
+#define BOARD_USING_QSPIFLASH
+#define BOARD_RT1050_FIRE
 
 /* RT1050 Bsp Config */
 
@@ -231,7 +243,7 @@
 
 /* Select lcd driver */
 
-/* Notice: Evk Board para: 480*272 4 4 8 2 40 10 106 45 */
+/* Notice: Fire Board para: 800*480 4 4 8 2 40 10 58 45 */
 
 #define RT_USING_LCD
 #define LCD_WIDTH 480
