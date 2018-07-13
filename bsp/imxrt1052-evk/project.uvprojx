@@ -335,9 +335,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--library_interface=armcc --library_type=standardlib --diag_suppress=66,1296,186</MiscControls>
-              <Define>RT_USING_ARM_LIBC, EVK_MCIMXRM, CPU_MIMXRT1052DVL6B, SKIP_SYSCLK_INIT, FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1</Define>
+              <Define>SKIP_SYSCLK_INIT, ENDIANNESS, FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1, EVK_MCIMXRM, CPU_MIMXRT1052DVL6B, RT_USING_ARM_LIBC</Define>
               <Undefine></Undefine>
-              <IncludePath>applications;.;drivers;Libraries;Libraries\drivers;Libraries\utilities;Libraries\CMSIS\Include;packages\netutils-latest\ping;packages\optparse-v1.0.0;packages\optparse-v1.0.0\example;packages\RDB;..\..\include;..\..\libcpu\arm\cortex-m7;..\..\libcpu\arm\common;..\..\components\dfs\include;..\..\components\dfs\filesystems\devfs;..\..\components\dfs\filesystems\elmfat;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\spi;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\finsh;..\..\components\libc\compilers\armlibc;..\..\components\net\lwip-2.0.2\src;..\..\components\net\lwip-2.0.2\src\include;..\..\components\net\lwip-2.0.2\src\include\ipv4;..\..\components\net\lwip-2.0.2\src\arch\include;..\..\components\net\lwip-2.0.2\src\include\netif;..\..\components\net\lwip-2.0.2\src\include\posix</IncludePath>
+              <IncludePath>applications;.;drivers;Libraries;Libraries\drivers;Libraries\utilities;Libraries\CMSIS\Include;packages\netutils-latest\ping;packages\optparse-v1.0.0;packages\optparse-v1.0.0\example;packages\RDB;..\..\include;..\..\libcpu\arm\cortex-m7;..\..\libcpu\arm\common;..\..\components\dfs\include;..\..\components\dfs\filesystems\devfs;..\..\components\dfs\filesystems\elmfat;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\spi;..\..\components\drivers\include;..\..\components\drivers\include;..\..\components\drivers\usb\usbdevice;..\..\components\finsh;..\..\components\libc\compilers\armlibc;..\..\components\net\lwip-2.0.2\src;..\..\components\net\lwip-2.0.2\src\include;..\..\components\net\lwip-2.0.2\src\include\ipv4;..\..\components\net\lwip-2.0.2\src\arch\include;..\..\components\net\lwip-2.0.2\src\include\netif;..\..\components\net\lwip-2.0.2\src\include\posix</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -460,6 +460,26 @@
               <FileName>drv_sdio.c</FileName>
               <FileType>1</FileType>
               <FilePath>drivers\drv_sdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_usbd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>drivers\drv_usbd.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_device_dci.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>drivers\usb\device\usb_device_dci.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_device_ehci.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>drivers\usb\device\usb_device_ehci.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_phy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>drivers\usb\phy\usb_phy.c</FilePath>
             </File>
             <File>
               <FileName>drv_eth_fire.c</FileName>
@@ -831,6 +851,11 @@
               <FileType>1</FileType>
               <FilePath>packages\RDB\rdbd_test_case.c</FilePath>
             </File>
+            <File>
+              <FileName>usb_rdbd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>packages\RDB\usb_rdbd.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1154,6 +1179,21 @@
               <FileName>workqueue.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\components\drivers\src\workqueue.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>rt_usbd</GroupName>
+          <Files>
+            <File>
+              <FileName>core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\components\drivers\usb\usbdevice\core\core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbdevice.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\components\drivers\usb\usbdevice\core\usbdevice.c</FilePath>
             </File>
           </Files>
         </Group>

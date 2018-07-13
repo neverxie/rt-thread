@@ -106,6 +106,11 @@
 
 /* Using USB */
 
+#define RT_USING_USB_DEVICE
+#define RT_USBD_THREAD_STACK_SZ 4096
+#define USB_VENDOR_ID 0x0F78
+#define USB_PRODUCT_ID 0x0088
+#define _RT_USB_DEVICE_NONE
 
 /* POSIX layer and C standard library */
 
@@ -179,6 +184,7 @@
 #define PKG_USING_NETUTILS
 #define PKG_NETUTILS_PING
 #define PKG_NETUTILS_TCPDUMP
+#define PKG_NETUTILS_TCPDUMP_DBG
 #define PKG_USING_NETUTILS_LATEST_VERSION
 
 /* security packages */
@@ -258,5 +264,6 @@
 #define LCD_RST_PIN 45
 #define RT_USING_SDRAM
 #define RT_USING_RTC_HP
+#define RT_USING_EHCI0_AS_DEVICE
 
 #endif
