@@ -84,13 +84,13 @@
 
 #define PACP_FILE_HEADER_CREATE(_head)                          \
 do {                                                            \
-(_head)->magic = PCAP_FILE_ID;                                  \
-(_head)->version_major = PCAP_VERSION_MAJOR;                    \
-(_head)->version_minor = PCAP_VERSION_MINOR;                    \
-(_head)->thiszone = GREENWICH_MEAN_TIME;                        \
-(_head)->sigfigs = PRECISION_OF_TIME_STAMP;                     \
-(_head)->snaplen = MAX_LENTH_OF_CAPTURE_PKG;                    \
-(_head)->linktype = LINKTYPE_ETHERNET;                          \
+    (_head)->magic = PCAP_FILE_ID;                              \
+    (_head)->version_major = PCAP_VERSION_MAJOR;                \
+    (_head)->version_minor = PCAP_VERSION_MINOR;                \
+    (_head)->thiszone = GREENWICH_MEAN_TIME;                    \
+    (_head)->sigfigs = PRECISION_OF_TIME_STAMP;                 \
+    (_head)->snaplen = MAX_LENTH_OF_CAPTURE_PKG;                \
+    (_head)->linktype = LINKTYPE_ETHERNET;                      \
 } while (0)
 
 #define PACP_PKTHDR_CREATE(_head, _p)                           \
@@ -159,7 +159,6 @@ static rt_err_t rt_tcpdump_pcap_file_save(const void *buf, int len);
 
 static rt_err_t (*tcpdump_write)(const void *buf, int len);
 
-#define PKG_NETUTILS_TCPDUMP_PRINT
 #ifdef  PKG_NETUTILS_TCPDUMP_PRINT
 #define __is_print(ch) ((unsigned int)((ch) - ' ') < 127u - ' ')
 static void hex_dump(const rt_uint8_t *ptr, rt_size_t buflen)
@@ -168,7 +167,7 @@ static void hex_dump(const rt_uint8_t *ptr, rt_size_t buflen)
     int i, j;
 
     RT_ASSERT(ptr != RT_NULL);
-
+    
     for (i = 0; i < buflen; i += 16)
     {
         rt_kprintf("%08X: ", i);
@@ -586,7 +585,7 @@ static int rt_tcpdump_single_cmd(char *argv[], const char *cmd)
 
 static void rt_tcpdump_init_indicate(void)
 {
-    int name_flag=0, eth_flag=0, mode_flag=0;
+    int name_flag = 0, eth_flag = 0, mode_flag = 0;
     
     if (name == RT_NULL)
     {
@@ -632,7 +631,7 @@ static int rt_tcpdump_comp_parse(struct optparse *options)
             return -RT_ERROR;
         
         eth = options->optarg;
-        return INTERNET;
+        return RT_EOK;
     }
 
     else if (options->optopt == 'm')
@@ -644,14 +643,15 @@ static int rt_tcpdump_comp_parse(struct optparse *options)
         {
             mode = options->optarg;
             tcpdump_write = rt_tcpdump_pcap_file_write;
-            return SAVEIN;
+            return RT_EOK;
         }
 
         if (STRCMP(options->optarg, ==, "rdb"))
         {
             tcpdump_write = rt_tcpdump_pcap_file_save;
-            return SAVEIN;
+            return RT_EOK;
         }
+        
         name = TCPDUMP_DEFAULT_NANE;
     }
 
@@ -662,7 +662,7 @@ static int rt_tcpdump_comp_parse(struct optparse *options)
 
         name = options->optarg;
         
-        return WRITE;
+        return RT_EOK;
     }
 
     else
