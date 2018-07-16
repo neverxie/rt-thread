@@ -252,6 +252,15 @@ static rt_size_t rdbd_usb_write(rt_device_t dev, rt_off_t pos, const void *buffe
     rt_completion_init(&rdbd_ep_in_completion);
     rt_usbd_io_request(rdbd_func->device, rdbd_ep_in, &rdbd_ep_in->request);
     rt_completion_wait(&rdbd_ep_in_completion, RT_WAITING_FOREVER);
+    if(size%EP_MAXPACKET(rdbd_ep_in) == 0)
+    {
+        rdbd_ep_in->request.buffer = RT_NULL;
+        rdbd_ep_in->request.size = 0;
+        rdbd_ep_in->request.req_type = UIO_REQUEST_WRITE;
+        rt_completion_init(&rdbd_ep_in_completion);
+        rt_usbd_io_request(rdbd_func->device, rdbd_ep_in, &rdbd_ep_in->request);
+        rt_completion_wait(&rdbd_ep_in_completion, RT_WAITING_FOREVER);
+    }
     return size;
 }
 

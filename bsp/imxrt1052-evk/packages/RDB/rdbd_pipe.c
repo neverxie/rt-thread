@@ -57,16 +57,19 @@ static void rdbd_pipe_write_thread_entry(void * _pipe)
 {
     rdbd_pipe_device_t pipe = (rdbd_pipe_device_t)_pipe;
     rt_size_t read_size = 0;
-    rt_size_t remain_size = 0;
     rt_device_open((rt_device_t)pipe, 0);
     while(1)
     {
-        read_size = rt_device_read((rt_device_t)pipe, 0, pipe->msg->msg, MAX_PACKET_SIZE - 4);
-        if(read_size)
+        read_size = rt_device_read((rt_device_t)pipe, 0, RDBD_RAW_MSG(pipe->msg), 4);
+        if(read_size == 4)
         {
-            pipe->msg->pipe_address = pipe->addr;
-            pipe->msg->msg_len = read_size;
+            read_size = 0;
+            while(read_size < pipe->msg->msg_len)
+            {
+                read_size += rt_device_read((rt_device_t)pipe, 0, &pipe->msg->msg[read_size], pipe->msg->msg_len - read_size);
+            }
             rt_device_write((rt_device_t)pipe->rdbd_device, 0 , RDBD_RAW_MSG(pipe->msg), RDBD_MSG_LEN(pipe->msg));
+            rt_kprintf("\n[%d]\n", pipe->msg->msg_len);
         }
     }
 }
@@ -76,7 +79,7 @@ static rt_size_t rdbd_pipe_write(rt_device_t device, rt_off_t pos, const void *b
     uint8_t *pbuf;
     rt_size_t write_bytes = 0;
     rdbd_pipe_device_t pipe = (rdbd_pipe_device_t)device;
-
+    rt_kprintf("\n[%d]\n", count);
     if (device == RT_NULL)
     {
         rt_set_errno(-EINVAL);
@@ -85,11 +88,14 @@ static rt_size_t rdbd_pipe_write(rt_device_t device, rt_off_t pos, const void *b
     if (count == 0) return 0;
 
     pbuf = (uint8_t*)buffer;
+    pipe->msg->pipe_address = pipe->addr;
+    pipe->msg->msg_len = count;
+    rt_memcpy(pipe->msg->msg, buffer, count);
     rt_mutex_take(&pipe->parent.lock, RT_WAITING_FOREVER);
-
+    count += 4;
     while (write_bytes < count)
     {
-        int len = rt_ringbuffer_put(pipe->parent.fifo, &pbuf[write_bytes], count - write_bytes);
+        int len = rt_ringbuffer_put(pipe->parent.fifo, RDBD_RAW_MSG(pipe->msg), count - write_bytes);
         if (len <= 0) break;
 
         write_bytes += len;
