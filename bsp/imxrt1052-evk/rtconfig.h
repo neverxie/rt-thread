@@ -198,9 +198,6 @@
 
 /* tools packages */
 
-#define PKG_USING_OPTPARSE
-#define PKG_USING_OPTPARSE_V100
-#define OPTPARSE_USING_DEMO
 
 /* system packages */
 
@@ -210,17 +207,14 @@
 
 /* miscellaneous packages */
 
+#define PKG_USING_OPTPARSE
+#define PKG_USING_OPTPARSE_V100
+#define OPTPARSE_USING_DEMO
 
 /* sample package */
 
 
 /* example package: hello */
-
-
-/* Privated Packages of RealThread */
-
-
-/* Network Utilities */
 
 #define SOC_IMXRT1052
 #define BOARD_USING_QSPIFLASH

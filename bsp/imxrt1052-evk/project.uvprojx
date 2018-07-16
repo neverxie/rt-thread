@@ -847,6 +847,16 @@
               <FilePath>packages\RDB\rdbd_pipe.c</FilePath>
             </File>
             <File>
+              <FileName>rdbd_shell.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>packages\RDB\rdbd_shell.c</FilePath>
+            </File>
+            <File>
+              <FileName>rdbd_shell_port.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>packages\RDB\rdbd_shell_port.c</FilePath>
+            </File>
+            <File>
               <FileName>rdbd_test_case.c</FileName>
               <FileType>1</FileType>
               <FilePath>packages\RDB\rdbd_test_case.c</FilePath>
