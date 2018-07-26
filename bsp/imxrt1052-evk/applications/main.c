@@ -120,7 +120,7 @@ int main(void)
     //dump_clock();
     dump_cc_info();
     dump_link_info();
-
+    
     rt_kprintf("build time: %s %s\n", __DATE__, __TIME__);
 
 #if defined(RT_USING_DFS) && defined(RT_USING_SDIO)
