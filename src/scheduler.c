@@ -264,6 +264,7 @@ void rt_system_scheduler_start(void)
     rt_current_thread = to_thread;
 #endif /*RT_USING_SMP*/
 
+    // 疑问：这是什么呀，怎么还要remove
     rt_schedule_remove_thread(to_thread);
     to_thread->stat = RT_THREAD_RUNNING;
 
@@ -410,24 +411,33 @@ void rt_schedule(void)
     {
         rt_ubase_t highest_ready_priority;
 
+        // 就绪优先级组，根据高优先级切换
+        // 此变量在插入线程里设置
         if (rt_thread_ready_priority_group != 0)
         {
             int need_insert_from_thread = 0;
 
+            // 取得最高优先级的线程
             to_thread = _get_highest_priority_thread(&highest_ready_priority);
 
+            // 当前线程是运行态
+            // stat & 0x0f
             if ((rt_current_thread->stat & RT_THREAD_STAT_MASK) == RT_THREAD_RUNNING)
             {
+                // 当前线程优先级＞就绪线程的优先级
                 if (rt_current_thread->current_priority < highest_ready_priority)
                 {
                     to_thread = rt_current_thread;
                 }
-                else
+                else // 当前线程优先级≤就绪线程的优先级
                 {
+                    // 需要插入from线程
                     need_insert_from_thread = 1;
                 }
             }
 
+            // 要切换别的线程
+            // 要切换 高/等 优先级的线程
             if (to_thread != rt_current_thread)
             {
                 /* if the destination thread is not the same as current thread */
@@ -435,13 +445,19 @@ void rt_schedule(void)
                 from_thread         = rt_current_thread;
                 rt_current_thread   = to_thread;
 
+                // 线程切换
+                // 函数定义吗？
+                // 疑问：这是怎么注册的呢？
                 RT_OBJECT_HOOK_CALL(rt_scheduler_hook, (from_thread, to_thread));
 
                 if (need_insert_from_thread)
                 {
+                    // 将上一当前线程插入系统就绪队列
+                    // 线程的状态将被设置为ready并从挂起队列中删除
                     rt_schedule_insert_thread(from_thread);
                 }
 
+                // 从系统就绪队列中删除“当前”线程，是指上面新切换的线程
                 rt_schedule_remove_thread(to_thread);
                 to_thread->stat = RT_THREAD_RUNNING;
 
@@ -458,12 +474,15 @@ void rt_schedule(void)
                 _rt_scheduler_stack_check(to_thread);
 #endif
 
+                // 没有中断
                 if (rt_interrupt_nest == 0)
                 {
                     extern void rt_thread_handle_sig(rt_bool_t clean_state);
 
+                    // 现在才来切换？我以为上面已经切了
                     rt_hw_context_switch((rt_ubase_t)&from_thread->sp,
                             (rt_ubase_t)&to_thread->sp);
+                    // lr
 
                     /* enable interrupt */
                     rt_hw_interrupt_enable(level);
@@ -482,8 +501,15 @@ void rt_schedule(void)
                             (rt_ubase_t)&to_thread->sp);
                 }
             }
-            else
+            // 要切换的线程是当前线程
+            // 这种情况同等优先级的
+            else // 这里有个疑问？
             {
+                // 从就绪队列种删除
+                // 这是因为smp
+                // 在多核的情况下，如果不从就緒队列上移除的话
+                // 第二个cpu有可能误解这个任务是可以运行的，就拿来运行，其实它已经在另一个核上正在跑了
+                // 所以，为了不让其他的核误解，正在运行的任务，从就绪队列上移除
                 rt_schedule_remove_thread(rt_current_thread);
                 rt_current_thread->stat = RT_THREAD_RUNNING;
             }
