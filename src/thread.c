@@ -290,8 +290,10 @@ rt_err_t rt_thread_startup(rt_thread_t thread)
     if (rt_thread_self() != RT_NULL)
     {
         /* do a scheduling */
+        rt_kprintf("\033[33m%s: sch前，要resum的线程是：%s\033[0m\n", __FUNCTION__, thread->name);
         rt_schedule();
     }
+    rt_kprintf("\033[33m%s: sch后，已启动线程是：%s\033[0m\n", __FUNCTION__, thread->name);
 
     return RT_EOK;
 }

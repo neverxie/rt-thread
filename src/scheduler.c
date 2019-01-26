@@ -154,6 +154,8 @@ void rt_system_scheduler_start(void)
     register rt_ubase_t number;
 
     number = __rt_ffs(rt_thread_ready_priority_group) - 1;
+    // 这里看到有点懵。。
+    // num << 3，即是num = num * 2^3
     highest_ready_priority = (number << 3) + __rt_ffs(rt_thread_ready_table[number]) - 1;
 #else
     highest_ready_priority = __rt_ffs(rt_thread_ready_priority_group) - 1;
@@ -191,6 +193,7 @@ void rt_schedule(void)
     /* disable interrupt */
     level = rt_hw_interrupt_disable();
 
+    // 调度器没有锁，才能切
     /* check the scheduler is enabled or not */
     if (rt_scheduler_lock_nest == 0)
     {
@@ -201,22 +204,29 @@ void rt_schedule(void)
 #else
         register rt_ubase_t number;
 
+        // number是转换为另一种说法的，从0开始
+        // rt_thread_ready_priority_group 一般不为0的，至少有个idle
+        // rt_ffs 是找出最高位是1的那个位
         number = __rt_ffs(rt_thread_ready_priority_group) - 1;
         highest_ready_priority = (number << 3) + __rt_ffs(rt_thread_ready_table[number]) - 1;
 #endif
 
+        // 拿到就绪队列里最高优先级的线程
         /* get switch to thread */
         to_thread = rt_list_entry(rt_thread_priority_table[highest_ready_priority].next,
                                   struct rt_thread,
                                   tlist);
 
         /* if the destination thread is not the same as current thread */
+        // 最高优先级的不是cur
         if (to_thread != rt_current_thread)
         {
             rt_current_priority = (rt_uint8_t)highest_ready_priority;
             from_thread         = rt_current_thread;
             rt_current_thread   = to_thread;
 
+            // 这个还不是很清楚怎么用的，等user注册的，类似我的中断
+            // 疑问：关于切换的玩意不是有汇编吗，怎么还弄个hook？
             RT_OBJECT_HOOK_CALL(rt_scheduler_hook, (from_thread, to_thread));
 
             /* switch to new thread */
@@ -232,10 +242,12 @@ void rt_schedule(void)
             _rt_scheduler_stack_check(to_thread);
 #endif
 
+            // 非中断嵌套
             if (rt_interrupt_nest == 0)
             {
                 extern void rt_thread_handle_sig(rt_bool_t clean_state);
 
+                //rt_kprintf("name: %s, %s:%d -> %s:%d\n", __FUNCTION__, from_thread->name, from_thread->current_priority, to_thread->name, to_thread->current_priority);
                 rt_hw_context_switch((rt_uint32_t)&from_thread->sp,
                                      (rt_uint32_t)&to_thread->sp);
 
@@ -246,18 +258,19 @@ void rt_schedule(void)
                 /* check signal status */
                 rt_thread_handle_sig(RT_TRUE);
 #endif
-            }
-            else
+            }// 疑问：为什么中断嵌套不能切换？
+            else // 中断嵌套
             {
                 RT_DEBUG_LOG(RT_DEBUG_SCHEDULER, ("switch in interrupt\n"));
 
+                // 疑问：只是保存？
                 rt_hw_context_switch_interrupt((rt_uint32_t)&from_thread->sp,
                                                (rt_uint32_t)&to_thread->sp);
                 /* enable interrupt */
                 rt_hw_interrupt_enable(level);
             }
         }
-        else
+        else // 最高优先级线程是cur？
         {
             /* enable interrupt */
             rt_hw_interrupt_enable(level);
@@ -286,6 +299,12 @@ void rt_schedule_insert_thread(struct rt_thread *thread)
     /* disable interrupt */
     temp = rt_hw_interrupt_disable();
 
+    // 改变状态
+    // RT_THREAD_READY = 0x01
+    // RT_THREAD_STAT_MASK = 0x0f
+    // stat & 0xf0 = 0xX0 只看高四位嘛
+    // 0x01 | 0xX0 = 0xX1 
+    // 设置为就绪态的意思
     /* change stat */
     thread->stat = RT_THREAD_READY | (thread->stat & ~RT_THREAD_STAT_MASK);
 
@@ -308,6 +327,7 @@ void rt_schedule_insert_thread(struct rt_thread *thread)
 #endif
 
 #if RT_THREAD_PRIORITY_MAX > 32
+    // 疑问：high_mask 是干嘛的？
     rt_thread_ready_table[thread->number] |= thread->high_mask;
 #endif
     rt_thread_ready_priority_group |= thread->number_mask;
@@ -353,6 +373,7 @@ void rt_schedule_remove_thread(struct rt_thread *thread)
 #if RT_THREAD_PRIORITY_MAX > 32
         rt_thread_ready_table[thread->number] &= ~thread->high_mask;
         if (rt_thread_ready_table[thread->number] == 0)
+
         {
             rt_thread_ready_priority_group &= ~thread->number_mask;
         }

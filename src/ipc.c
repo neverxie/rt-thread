@@ -82,6 +82,7 @@ rt_inline rt_err_t rt_ipc_list_suspend(rt_list_t        *list,
     /* suspend thread */
     rt_thread_suspend(thread);
 
+    // 将当前线程插入挂起线程链表
     switch (flag)
     {
     case RT_IPC_FLAG_FIFO:
@@ -90,17 +91,26 @@ rt_inline rt_err_t rt_ipc_list_suspend(rt_list_t        *list,
 
     case RT_IPC_FLAG_PRIO:
         {
-            struct rt_list_node *n;
+            struct rt_list_node *n; // rt_list_t 妈的，谁写的代码啊
             struct rt_thread *sthread;
 
+            // 有病吧，为什么不用rt_list_for_each
+            // rt_list_for_each(pos, head)
+            // 就是要将线程链表遍历一遍，找出最高优先级的线程，然后插入
             /* find a suitable position */
             for (n = list->next; n != list; n = n->next)
             {
+                // thread是当前线程
                 sthread = rt_list_entry(n, struct rt_thread, tlist);
 
+                // 当前线程的优先级
+                // if (4 < 7) 将4 insert_before(如果list是头的话，ib就是插到尾巴了)
+                // if (4 < 3) 继续遍历
                 /* find out */
                 if (thread->current_priority < sthread->current_priority)
                 {
+                    // 将优先级高的插到sthread链表，也就是形参list
+                    // list即suspend_list
                     /* insert this thread before the sthread */
                     rt_list_insert_before(&(sthread->tlist), &(thread->tlist));
                     break;
@@ -335,6 +345,7 @@ rt_err_t rt_sem_take(rt_sem_t sem, rt_int32_t time)
                                 rt_thread_self()->name,
                                 ((struct rt_object *)sem)->name,
                                 sem->value));
+    thread = rt_thread_self();
 
     if (sem->value > 0)
     {
@@ -343,6 +354,7 @@ rt_err_t rt_sem_take(rt_sem_t sem, rt_int32_t time)
 
         /* enable interrupt */
         rt_hw_interrupt_enable(temp);
+        rt_kprintf("\033[37m%s，%d，信号量的值：%d\033[0m\n", __FUNCTION__, __LINE__, sem->value);
     }
     else
     {
@@ -368,6 +380,7 @@ rt_err_t rt_sem_take(rt_sem_t sem, rt_int32_t time)
             RT_DEBUG_LOG(RT_DEBUG_IPC, ("sem take: suspend thread - %s\n",
                                         thread->name));
 
+            // 挂起当前线程且按照flag将当前线程插入挂起线程链表
             /* suspend thread */
             rt_ipc_list_suspend(&(sem->parent.suspend_thread),
                                 thread,
@@ -376,6 +389,7 @@ rt_err_t rt_sem_take(rt_sem_t sem, rt_int32_t time)
             /* has waiting time, start thread timer */
             if (time > 0)
             {
+                rt_kprintf("\033[30m%s 有设时间，sch前，当前线程名：%s\033[0m\n", __FUNCTION__, thread->name);
                 RT_DEBUG_LOG(RT_DEBUG_IPC, ("set thread:%s to timer list\n",
                                             thread->name));
 
@@ -389,15 +403,19 @@ rt_err_t rt_sem_take(rt_sem_t sem, rt_int32_t time)
             /* enable interrupt */
             rt_hw_interrupt_enable(temp);
 
+            //rt_kprintf("\033[37m%s: sch前，当前线程名：%s\033[0m\n", __FUNCTION__, thread->name);
             /* do schedule */
             rt_schedule();
+            //rt_kprintf("\033[37m%s: sch后，当前线程名：%s\033[0m\n", __FUNCTION__, thread->name);
 
             if (thread->error != RT_EOK)
             {
+                rt_kprintf("\033[34m%s，%d，线程错误状态：%d\033[0m\n", __FUNCTION__, __LINE__, thread->error);
                 return thread->error;
             }
         }
     }
+    //rt_kprintf("\033[37m%s，%d，退出sem take\033[0m\n", __FUNCTION__, __LINE__);
 
     RT_OBJECT_HOOK_CALL(rt_object_take_hook, (&(sem->parent.parent)));
 
@@ -447,6 +465,11 @@ rt_err_t rt_sem_release(rt_sem_t sem)
                                 ((struct rt_object *)sem)->name,
                                 sem->value));
 
+    // 这个list不为空，才能执行里面的
+    // ipc_obj 挂起线程链表
+    // 意思就是检查ipc链表有没有挂起的线程
+    // increase的作用就是sem->val++，因为time设置的问题
+    // 线程就有可能挂起或没有挂起
     if (!rt_list_isempty(&sem->parent.suspend_thread))
     {
         /* resume the suspended thread */
