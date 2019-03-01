@@ -57,6 +57,7 @@ rt_hw_context_switch_interrupt:
     mov r3, #1
     str r3, [r2]
 
+irq_flag_set:
     ldr r3, =rt_interrupt_from_thread
     str r0, [r3]
 
@@ -67,8 +68,6 @@ rt_hw_context_switch_interrupt:
      * ldr r4, [r3]
      * str r2, [r4]
      */
-
-irq_flag_set:
     ldr r3, =rt_interrupt_to_thread
     str r1, [r3]
 
