@@ -16,7 +16,7 @@ if os.getenv('RTT_CC'):
 # EXEC_PATH is the compiler execute path, for example, CodeSourcery, Keil MDK, IAR
 if  CROSS_TOOL  == 'gcc':
 	PLATFORM 	= 'gcc'
-	EXEC_PATH 	= 'D:/ArdaArmTools/GNUARM_4.9_2015q1/bin'
+	EXEC_PATH 	= '/usr/bin/arm-none-eabi-gcc'
 elif CROSS_TOOL == 'keil':
 	PLATFORM 	= 'armcc'
 	EXEC_PATH 	= 'C:/Keil_v5'
