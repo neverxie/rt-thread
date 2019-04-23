@@ -154,7 +154,16 @@
 
 /* AT commands */
 
-/* RT_USING_AT is not set */
+#define RT_USING_AT
+/* AT_DEBUG is not set */
+/* AT_USING_SERVER is not set */
+#define AT_USING_CLIENT
+#define AT_CLIENT_NUM_MAX 1
+/* AT_USING_SOCKET is not set */
+/* AT_USING_CLI is not set */
+/* AT_PRINT_RAW_CMD is not set */
+#define AT_CMD_MAX_LEN 512
+#define AT_SW_VERSION_NUM 0x10200
 
 /* VBUS(Virtual Software BUS) */
 
@@ -281,7 +290,14 @@
 /* PKG_USING_FASTLZ is not set */
 /* PKG_USING_MINILZO is not set */
 /* PKG_USING_QUICKLZ is not set */
-/* PKG_USING_MULTIBUTTON is not set */
+#define PKG_USING_MULTIBUTTON
+/* PKG_USING_MULTIBUTTON_V102 is not set */
+#define PKG_USING_MULTIBUTTON_LATEST_VERSION
+
+/* MultiButton Options */
+
+#define MULTIBUTTON_USING_EXAMPLE_ASYNC
+/* MULTIBUTTON_USING_EXAMPLE_INQUIRE is not set */
 /* PKG_USING_CANFESTIVAL is not set */
 /* PKG_USING_ZLIB is not set */
 /* PKG_USING_DSTR is not set */

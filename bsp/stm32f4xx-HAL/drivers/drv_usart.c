@@ -117,6 +117,19 @@ static rt_err_t drv_control(struct rt_serial_device *serial,
     return RT_EOK;
 }
 
+
+extern struct rt_serial_device serial2;
+int mt_drv_putc(char c)
+{
+    struct rt_serial_device *serial = &serial2;
+    struct drv_uart *uart;
+    RT_ASSERT(serial != RT_NULL);
+    uart = (struct drv_uart *)serial->parent.user_data;
+    __HAL_UART_CLEAR_FLAG(&(uart->UartHandle), UART_FLAG_TC);
+    uart->UartHandle.Instance->DR = c;
+    while (__HAL_UART_GET_FLAG(&(uart->UartHandle), UART_FLAG_TC) == RESET);
+    return 1;
+}
 static int drv_putc(struct rt_serial_device *serial, char c)
 {
     struct drv_uart *uart;
@@ -149,6 +162,7 @@ static const struct rt_uart_ops drv_uart_ops =
 };
 
 #if defined(BSP_USING_UART1)
+#include <drv_led.h>
 /* UART1 device driver structure */
 static struct drv_uart uart1;
 struct rt_serial_device serial1;
@@ -166,6 +180,7 @@ void USART1_IRQHandler(void)
         /* Clear RXNE interrupt flag */
         __HAL_UART_CLEAR_FLAG(&uart->UartHandle, UART_FLAG_RXNE);
     }
+    __HAL_UART_CLEAR_OREFLAG(&(uart->UartHandle));
     /* leave interrupt */
     rt_interrupt_leave();
 }
