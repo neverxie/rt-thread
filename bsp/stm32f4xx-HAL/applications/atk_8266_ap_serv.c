@@ -9,7 +9,6 @@
 #include <rtthread.h>
 #include <drv_led.h>
 #include <at.h>
-rt_err_t
 static void atk_8266_ap_serv_entry(void *param) {
     uint8_t chan = 1;
     uint8_t wpa = 4;
