@@ -107,7 +107,7 @@
 #define RT_SERIAL_USING_DMA
 #define RT_SERIAL_RB_BUFSZ 64
 /* RT_USING_CAN is not set */
-/* RT_USING_HWTIMER is not set */
+#define RT_USING_HWTIMER
 /* RT_USING_CPUTIME is not set */
 /* RT_USING_I2C is not set */
 #define RT_USING_PIN
@@ -281,7 +281,14 @@
 /* PKG_USING_FASTLZ is not set */
 /* PKG_USING_MINILZO is not set */
 /* PKG_USING_QUICKLZ is not set */
-/* PKG_USING_MULTIBUTTON is not set */
+#define PKG_USING_MULTIBUTTON
+/* PKG_USING_MULTIBUTTON_V102 is not set */
+#define PKG_USING_MULTIBUTTON_LATEST_VERSION
+
+/* MultiButton Options */
+
+#define MULTIBUTTON_USING_EXAMPLE_ASYNC
+/* MULTIBUTTON_USING_EXAMPLE_INQUIRE is not set */
 /* PKG_USING_CANFESTIVAL is not set */
 /* PKG_USING_ZLIB is not set */
 /* PKG_USING_DSTR is not set */
